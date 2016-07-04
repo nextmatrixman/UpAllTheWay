@@ -38,16 +38,35 @@ class CharacterController(ShowBase):
         ShowBase.__init__(self)
 
         self.setupLights()
+        
+        
         # Input
+#         inputState.watchWithModifiers('forward', 'w')
+#         inputState.watchWithModifiers('reverse', 's')
+#         inputState.watchWithModifiers('turnLeft', 'a')
+#         inputState.watchWithModifiers('turnRight', 'd')
+        
+        
+        # This is used to store which keys are currently pressed.
+        self.keyMap = {"left": 0, "right": 0, "forward": 0, "reverse": 0}
+        
+        # Accept the control keys for movement and rotation
         self.accept('escape', self.doExit)
         self.accept('r', self.doReset)
         self.accept('f3', self.toggleDebug)
         self.accept('space', self.doJump)
-
-        inputState.watchWithModifiers('forward', 'w')
-        inputState.watchWithModifiers('reverse', 's')
-        inputState.watchWithModifiers('turnLeft', 'a')
-        inputState.watchWithModifiers('turnRight', 'd')
+        self.accept("a", self.setKey, ["left", True])
+        self.accept("a-up", self.setKey, ["left", False])
+        self.accept("d", self.setKey, ["right", True])
+        self.accept("d-up", self.setKey, ["right", False])
+        self.accept("w", self.setKey, ["forward", True])
+        self.accept("w-up", self.setKey, ["forward", False])
+        self.accept("s", self.setKey, ["reverse", True])
+        self.accept("s-up", self.setKey, ["reverse", False])
+        
+        # Game state variables
+        self.isMoving = False
+        self.isJumping = False
 
         # Task
         taskMgr.add(self.update, 'updateWorld')
@@ -82,21 +101,37 @@ class CharacterController(ShowBase):
         self.character.setMaxJumpHeight(5.0)
         self.character.setJumpSpeed(8.0)
         self.character.doJump()
+        self.actorNP.play("jump")
 
+    # Records the state of the keys
+    def setKey(self, key, value):
+        self.keyMap[key] = value
+    
     def processInput(self, dt):
         speed = Vec3(0, 0, 0)
         omega = 0.0
-
-        if inputState.isSet('forward'): speed.setY( 2.0)
-        if inputState.isSet('reverse'): speed.setY(-2.0)
-        if inputState.isSet('left'):    speed.setX(-2.0)
-        if inputState.isSet('right'):   speed.setX( 2.0)
-        if inputState.isSet('turnLeft'):  omega =  120.0
-        if inputState.isSet('turnRight'): omega = -120.0
-
+        
+        if self.keyMap["left"]:
+          omega =  120.0
+        if self.keyMap["right"]:
+          omega = -120.0
+        if self.keyMap["forward"]:
+          speed.setY(2.0)
+        if self.keyMap["reverse"]:
+          speed.setY(-2.0)
+          
         self.character.setAngularMovement(omega)
         self.character.setLinearMovement(speed, True)
-
+        
+        if self.keyMap["forward"] or self.keyMap["left"] or self.keyMap["right"] or self.keyMap["reverse"]:
+          if self.isMoving is False:
+            self.actorNP.loop("run")
+            self.isMoving = True
+        else:
+          if self.isMoving:
+            self.actorNP.stop()
+            self.isMoving = False
+                
     def update(self, task):
         dt = globalClock.getDt()
         self.processInput(dt)
@@ -141,7 +176,6 @@ class CharacterController(ShowBase):
         self.render.setLight(dlightNP)
 
     def setup(self):
-
         # World
         self.debugNP = self.render.attachNewNode(BulletDebugNode('Debug'))
         self.debugNP.show()
