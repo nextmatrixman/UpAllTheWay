@@ -135,15 +135,16 @@ class CharacterController(ShowBase):
       camvec.setZ(0)
       camdist = camvec.length()
       camvec.normalize()
-      if (camdist > 10.0):
+      if (camdist > 15.0):
         base.camera.setPos(base.camera.getPos() + camvec*(camdist-10))
-        camdist = 10.0
+        camdist = 15.0
       if (camdist < 5.0):
         base.camera.setPos(base.camera.getPos() - camvec*(5-camdist))
         camdist = 5.0
 
       self.floater.setPos(self.characterNP.getPos())
       self.floater.setZ(self.characterNP.getZ() + 2.0)
+      base.camera.setZ(self.floater.getZ() + 15.0)
       base.camera.lookAt(self.floater)
 
       return task.cont
@@ -183,41 +184,10 @@ class CharacterController(ShowBase):
       floorNP.setPos(0, 0, 0)
       floorNP.setCollideMask(BitMask32.allOn())
       self.world.attachRigidBody(floorNP.node())
-
-      # Stair
-      origin = Point3(2, 0, 0)
-      size = Vec3(2, 4.75, 1)
-      shape = BulletBoxShape(size * 0.55)
-      for i in range(10):
-        pos = origin + size * i
-        pos.setY(0)
-        stairNP = self.render.attachNewNode(BulletRigidBodyNode('Stair%i' % i))
-        stairNP.node().addShape(shape)
-        stairNP.setPos(pos)
-        stairNP.setCollideMask(BitMask32.allOn())
-
-        modelNP = loader.loadModel('models/box.egg')
-        modelNP.reparentTo(stairNP)
-        # modelNP.setPos(0, 0, 0)
-        modelNP.setPos(-size.x/2.0, -size.y/2.0, -size.z/2.0)
-        modelNP.setScale(size)
-        self.world.attachRigidBody(stairNP.node())
-
-      for i in range(10):
-        pos = origin + size * i
-        pos.setY(0)
-        pos.setX(pos.getX()*-1)
-        stairNP = self.render.attachNewNode(BulletRigidBodyNode('Stair%i' % i))
-        stairNP.node().addShape(shape)
-        stairNP.setPos(pos)
-        stairNP.setCollideMask(BitMask32.allOn())
-
-        modelNP = loader.loadModel('models/box.egg')
-        modelNP.reparentTo(stairNP)
-        modelNP.setPos(-size.x/2.0, -size.y/2.0, -size.z/2.0)
-        modelNP.setScale(size)
-
-        self.world.attachRigidBody(stairNP.node())
+      floorModel = self.loader.loadModel("models/brick-cube/brick")
+      floorModel.setScale(100, 100, 1)
+      floorModel.setPos(0, 0, -5)
+      floorModel.reparentTo(self.render)
 
       # Character
       h = 1.75
@@ -240,6 +210,45 @@ class CharacterController(ShowBase):
       self.actorNP.setScale(0.3048)
       self.actorNP.setH(180)
       self.actorNP.setPos(0, 0, 0.3)
+      
+      # platforms
+      # call platformFactory to create new platforms
+      self.platformFactory()
+      
+    # This is a temporary method for proof of concept, there will be a class made for this
+    def platformFactory(self):
+      platformShape1 = BulletBoxShape(0.5)
+      platformNP1 = self.render.attachNewNode(BulletRigidBodyNode('Platform1'))
+      platformNP1.node().addShape(platformShape1)
+      platformNP1.setPos(4, 4, 2)
+      platformNP1.setCollideMask(BitMask32.allOn())
+      self.world.attachRigidBody(platformNP1.node())
+      platformModel1 = self.loader.loadModel("models/stone-cube/stone")
+      platformModel1.setScale(1, 1, 1)
+      platformModel1.setPos(4, 4, 1.5)
+      platformModel1.reparentTo(self.render)
+      
+      platformShape2 = BulletBoxShape(0.5)
+      platformNP2 = self.render.attachNewNode(BulletRigidBodyNode('Platform2'))
+      platformNP2.node().addShape(platformShape2)
+      platformNP2.setPos(6, 6, 4)
+      platformNP2.setCollideMask(BitMask32.allOn())
+      self.world.attachRigidBody(platformNP2.node())
+      platformModel2 = self.loader.loadModel("models/stone-cube/stone")
+      platformModel2.setScale(1, 1, 1)
+      platformModel2.setPos(6, 6, 3.5)
+      platformModel2.reparentTo(self.render)
+      
+      platformShape3 = BulletBoxShape(0.5)
+      platformNP3 = self.render.attachNewNode(BulletRigidBodyNode('Platform3'))
+      platformNP3.node().addShape(platformShape3)
+      platformNP3.setPos(8, 8, 6)
+      platformNP3.setCollideMask(BitMask32.allOn())
+      self.world.attachRigidBody(platformNP3.node())
+      platformModel3 = self.loader.loadModel("models/stone-cube/stone")
+      platformModel3.setScale(1, 1, 1)
+      platformModel3.setPos(8, 8, 5.5)
+      platformModel3.reparentTo(self.render)
 
 game = CharacterController()
 game.run()
