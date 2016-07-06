@@ -74,6 +74,12 @@ class CharacterController(ShowBase):
       # variable in a variety of calculations.
       self.floater = NodePath(PandaNode("floater"))
       self.floater.reparentTo(render)
+      
+      # Add sound effects
+      self.gameMusic = base.loader.loadSfx("models/music/level1.ogg")
+      self.jumpSound = base.loader.loadSfx("models/music/jumping.ogg")
+      self.runSound = base.loader.loadSfx("models/music/running.ogg")
+      self.gameMusic.play()
     
     def doExit(self):
       self.cleanup()
@@ -94,6 +100,7 @@ class CharacterController(ShowBase):
       self.character.setJumpSpeed(8.0)
       self.character.doJump()
       self.actorNP.play("jump")
+      self.jumpSound.play()
 
     # Records the state of the keys
     def setKey(self, key, value):
@@ -118,10 +125,12 @@ class CharacterController(ShowBase):
       if self.keyMap["forward"] or self.keyMap["left"] or self.keyMap["right"] or self.keyMap["reverse"]:
         if self.isMoving is False:
           self.actorNP.loop("run")
+          self.runSound.play()
           self.isMoving = True
       else:
         if self.isMoving:
           self.actorNP.stop()
+          self.runSound.stop()
           self.isMoving = False
                 
     def update(self, task):
