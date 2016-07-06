@@ -33,7 +33,7 @@ from panda3d.bullet import BulletSoftBodyNode
 from panda3d.bullet import BulletSoftBodyConfig
 from panda3d.bullet import ZUp
 
-class CharacterController(ShowBase):
+class UpAllTheWay(ShowBase):
     def __init__(self):
       ShowBase.__init__(self)
 
@@ -76,9 +76,11 @@ class CharacterController(ShowBase):
       self.floater.reparentTo(render)
       
       # Add sound effects
-      self.gameMusic = base.loader.loadSfx("models/music/level1.ogg")
-      self.jumpSound = base.loader.loadSfx("models/music/jumping.ogg")
-      self.runSound = base.loader.loadSfx("models/music/running.ogg")
+      self.gameMusic = base.loader.loadSfx("sounds/level1.mp3")
+      self.jumpSound = base.loader.loadSfx("sounds/jumping.wav")
+      self.runSound = base.loader.loadSfx("sounds/running.ogg")
+      self.gameMusic.setLoop()
+      self.gameMusic.setVolume(0.4)
       self.gameMusic.play()
     
     def doExit(self):
@@ -259,5 +261,5 @@ class CharacterController(ShowBase):
       platformModel3.setPos(8, 8, 5.5)
       platformModel3.reparentTo(self.render)
 
-game = CharacterController()
+game = UpAllTheWay()
 game.run()
