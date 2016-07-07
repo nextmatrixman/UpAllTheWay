@@ -16,6 +16,7 @@ class Player(object):
     self.x = x
     self.y = y
     self.z = z
+    
     # Game state variables
     self.isMoving = False
     self.isJumping = False
@@ -49,7 +50,7 @@ class Player(object):
     self.actorNP.reparentTo(self.characterNP)
     self.actorNP.setScale(0.3048)
     self.actorNP.setH(180)
-    self.actorNP.setPos(self.x, self.y, self.z + 0.3)
+    self.actorNP.setPos(self.x, self.y, self.z + 0.27)
     
   def setKey(self, key, value):
     self.keyMap[key] = value

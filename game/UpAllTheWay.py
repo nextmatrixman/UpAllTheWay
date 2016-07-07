@@ -5,6 +5,7 @@
 import sys
 from Platform import Platform
 from Player import Player
+from Tran import Tran
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import AmbientLight
 from panda3d.core import DirectionalLight
@@ -139,6 +140,7 @@ class UpAllTheWay(ShowBase):
       platform = Platform(self.render, self.world, self.loader, i, 1, -(i*2+4), -(i*2+4), i*3)
     
     self.player = Player(self.render, self.world, 0, 0, 0)
+    self.tran1 = Tran(self.render, self.world, 1, 1, 1, 1)
 
 game = UpAllTheWay()
 game.run()
