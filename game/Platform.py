@@ -21,7 +21,7 @@ class Platform(object):
     
   def createPlatform(self):
     platformShape = BulletBoxShape(Vec3(self.side, self.side, 0.2))
-    platformNP = self.render.attachNewNode(BulletRigidBodyNode('Platform'))
+    platformNP = self.render.attachNewNode(BulletRigidBodyNode('Platform' + str(self.id)))
     platformNP.node().addShape(platformShape)
     platformNP.setPos(self.x, self.y, self.z)
     platformNP.setCollideMask(BitMask32.allOn())
