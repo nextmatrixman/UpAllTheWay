@@ -6,6 +6,8 @@ import sys
 from Platform import Platform
 from Player import Player
 from Tran import Tran
+from Akis import Akis
+from Kang import Kang
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import AmbientLight
 from panda3d.core import DirectionalLight
@@ -144,6 +146,8 @@ class UpAllTheWay(ShowBase):
     
     self.player = Player(self.render, self.world, 0, 0, 0)
     self.tran1 = Tran(self.render, self.world, 1, 1, 1, 1)
+    self.tran1 = Akis(self.render, self.world, 2, -1, -1, 1)
+    self.tran1 = Kang(self.render, self.world, 3, -1, 1, 1)
 
 game = UpAllTheWay()
 game.run()
