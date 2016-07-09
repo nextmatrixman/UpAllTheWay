@@ -16,6 +16,9 @@ class Player(object):
     self.x = x
     self.y = y
     self.z = z
+    self.initialX = x
+    self.initialY = y
+    self.initialZ = z
     
     # Game state variables
     self.isMoving = False
@@ -91,3 +94,7 @@ class Player(object):
   
   def getCharacterNP(self):
     return self.characterNP
+  
+  def resetCharacter(self):
+    self.characterNP.setPos(self.initialX, self.initialY, self.initialZ)
+    self.actorNP.setPos(self.initialX, self.initialY, self.initialZ + 0.27)

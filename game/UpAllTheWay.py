@@ -101,6 +101,9 @@ class UpAllTheWay(ShowBase):
     else:
       base.camera.setZ(0.0)
     base.camera.lookAt(self.floater)
+    
+    if (self.player.getCharacterNP().getZ() < -60):
+      self.player.resetCharacter()
 
     return task.cont
 

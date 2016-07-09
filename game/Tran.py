@@ -43,7 +43,11 @@ class Tran(object):
     self.actorModelNP.setPos(0, 0, 0.27)
   
   def move(self, dt):
-    print 'need move logic'
+    print 'need AI'
+    # when distance between player and this is < threashold
+    # this.setPos(player pos)
+    # this.lookAt player
+    # isMoving = true
   
   def getCharacterNP(self):
     return self.characterNP
