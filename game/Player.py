@@ -49,7 +49,6 @@ class Player(object):
     self.actorNP = Actor('models/Bricker/Bricker3.egg', {
                      'run': 'models/Bricker/Bricker-run.egg',
                      'jump': 'models/Bricker/Bricker-jump.egg'})
-
     self.actorNP.reparentTo(self.characterNP)
     self.actorNP.setScale(0.3048)
     self.actorNP.setH(180)

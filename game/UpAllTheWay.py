@@ -5,9 +5,6 @@
 import sys
 from Platform import Platform
 from Player import Player
-from Tran import Tran
-from Akis import Akis
-from Kang import Kang
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import AmbientLight
 from panda3d.core import DirectionalLight
@@ -138,11 +135,11 @@ class UpAllTheWay(ShowBase):
     self.world.setDebugNode(self.debugNP.node())
 
     # Floor
-    floor = Platform(self.render, self.world, self.loader, -1, -1, 5, 0, 0, -3)
+    floor = Platform(self.render, self.world, self.loader, -1, str(-1), 5, 0, 0, -3)
 
     # TODO: creating dummy platforms for testing
-    for i in range(10):
-      platform = Platform(self.render, self.world, self.loader, i%3, i, 2, -(i*2+6), -(i*2+6), i*3)
+    for i in range(12):
+      platform = Platform(self.render, self.world, self.loader, i%4, str(i), 2, -(i*2+6), -(i*2+6), i*3)
     
     self.player = Player(self.render, self.world, 0, 0, 0)
 
