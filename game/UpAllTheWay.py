@@ -139,7 +139,7 @@ class UpAllTheWay(ShowBase):
 
     # TODO: create platform generator that takes in a number and generates that many platforms with reasonable distance
     for i in range(6):
-      Platform(self.render, self.world, self.loader, i, str(i), 2, -(i*2+6), -(i*2+6), i*3)
+      Platform(self.render, self.world, self.loader, i, str(i), 4, -(i*6+6), -(i*6+6), i*3)
     
     self.player = Player(self.render, self.world, 0, 0, 0)
 

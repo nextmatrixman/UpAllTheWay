@@ -26,7 +26,7 @@ class Platform(object):
     self.z = z
     self.createPlatform()
     self.zOffset = 4
-    self.xYOffset = self.side/2
+    self.xYOffset = self.side/10*5
     
     if (self.thing > -1):
       self.addEnemy()
