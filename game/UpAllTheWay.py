@@ -138,16 +138,13 @@ class UpAllTheWay(ShowBase):
     self.world.setDebugNode(self.debugNP.node())
 
     # Floor
-    floor = Platform(self.render, self.world, self.loader, -1, 5, 0, 0, -3)
+    floor = Platform(self.render, self.world, self.loader, -1, -1, 5, 0, 0, -3)
 
     # TODO: creating dummy platforms for testing
     for i in range(10):
-      platform = Platform(self.render, self.world, self.loader, i, 1, -(i*2+4), -(i*2+4), i*3)
+      platform = Platform(self.render, self.world, self.loader, i%3, i, 2, -(i*2+6), -(i*2+6), i*3)
     
     self.player = Player(self.render, self.world, 0, 0, 0)
-    self.tran1 = Tran(self.render, self.world, 1, 1, 1, 1)
-    self.tran1 = Akis(self.render, self.world, 2, -1, -1, 1)
-    self.tran1 = Kang(self.render, self.world, 3, -1, 1, 1)
 
 game = UpAllTheWay()
 game.run()
