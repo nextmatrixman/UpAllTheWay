@@ -135,11 +135,11 @@ class UpAllTheWay(ShowBase):
     self.world.setDebugNode(self.debugNP.node())
 
     # Floor
-    floor = Platform(self.render, self.world, self.loader, -1, str(-1), 5, 0, 0, -3)
+    Platform(self.render, self.world, self.loader, -1, str(-1), 5, 0, 0, -3)
 
-    # TODO: creating dummy platforms for testing
-    for i in range(12):
-      platform = Platform(self.render, self.world, self.loader, i%4, str(i), 2, -(i*2+6), -(i*2+6), i*3)
+    # TODO: create platform generator that takes in a number and generates that many platforms with reasonable distance
+    for i in range(6):
+      Platform(self.render, self.world, self.loader, i, str(i), 2, -(i*2+6), -(i*2+6), i*3)
     
     self.player = Player(self.render, self.world, 0, 0, 0)
 

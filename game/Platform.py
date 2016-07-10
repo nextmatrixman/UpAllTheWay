@@ -5,7 +5,9 @@
 from Tran import Tran
 from Akis import Akis
 from Kang import Kang
-from Item import Item
+from Collectable import Collectable
+from Door import Door
+from MagicBox import MagicBox
 from panda3d.core import BitMask32
 from panda3d.core import Vec3
 from panda3d.bullet import BulletBoxShape
@@ -50,5 +52,8 @@ class Platform(object):
     elif (self.thing == 2):
       Kang(self.render, self.world, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
     elif (self.thing == 3):
-      Item(self.render, self.world, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
-    
+      Collectable(self.render, self.world, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
+    elif (self.thing == 4):
+      Door(self.render, self.world, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
+    elif (self.thing == 5):
+      MagicBox(self.render, self.world, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
