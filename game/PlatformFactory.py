@@ -12,7 +12,13 @@ class PlatformFactory(object):
     self.loader = loader
     self.platformCount = platformCount
     self.collectableCount = collectableCount
-    self.zStep = 3
+    self.lastSide = 2
+    self.currentX = 0
+    self.currentY = 0
+    self.currentZ = -3
+    self.zOffset = 3
+    
+    # call methods
     self.generatePlatform()
     self.insertCollectable()
     self.createPlatform()
@@ -22,10 +28,15 @@ class PlatformFactory(object):
     self.platformList = []
     
     for i in range(self.platformCount):
-      self.side = random.randint(1, 4)
+      self.currentSide = random.randint(1, 4)
+      self.tempOffset = self.lastSide + self.currentSide + 3
+      self.currentX = self.currentX + random.choice([self.tempOffset, 0, -self.tempOffset])
+      self.currentY = self.currentY + self.tempOffset
+      self.currentZ = self.currentZ + self.zOffset
+      self.lastSide = self.currentSide
       
-      # [collectable, side, x, y]
-      self.platformList.append([0, self.side, -(i*4+6), -(i*4+6)])
+      # [collectable, side, x, y, z]
+      self.platformList.append([0, self.currentSide, self.currentX, self.currentY, self.currentZ])
   
   def insertCollectable(self):
     if (self.collectableCount > 0):
@@ -45,4 +56,4 @@ class PlatformFactory(object):
   def createPlatform(self):
     if (len(self.platformList) > 0):
       for i in range(len(self.platformList)):
-        Platform(self.render, self.world, self.loader, self.platformList[i][0], str(i), self.platformList[i][1], self.platformList[i][2], self.platformList[i][3], i*self.zStep)
+        Platform(self.render, self.world, self.loader, self.platformList[i][0], str(i), self.platformList[i][1], self.platformList[i][2], self.platformList[i][3], self.platformList[i][4])

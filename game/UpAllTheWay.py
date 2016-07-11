@@ -85,9 +85,9 @@ class UpAllTheWay(ShowBase):
     camdist = camvec.length()
     camvec.normalize()
     # If the camera is too far from Di, move it closer.
-    if (camdist > 15.0):
+    if (camdist > 20.0):
       base.camera.setPos(base.camera.getPos() + camvec*(camdist-10))
-      camdist = 15.0
+      camdist = 20.0
     # If the camera is too close to Di, move it farther.
     if (camdist < 5.0):
       base.camera.setPos(base.camera.getPos() - camvec*(5-camdist))
@@ -96,8 +96,8 @@ class UpAllTheWay(ShowBase):
     self.floater.setPos(self.player.getCharacterNP().getPos())
     self.floater.setZ(self.player.getCharacterNP().getZ() + 2.0)
     
-    if (self.floater.getZ() > -15.0):
-      base.camera.setZ(self.floater.getZ() + 15.0)
+    if (self.floater.getZ() > -20.0):
+      base.camera.setZ(self.floater.getZ() + 20.0)
     else:
       base.camera.setZ(0.0)
     
@@ -140,7 +140,7 @@ class UpAllTheWay(ShowBase):
     Platform(self.render, self.world, self.loader, 0, str(-1), 2, 0, 0, -3)
 
     # Platforms
-    PlatformFactory(self.render, self.world, self.loader, 6, 3)
+    PlatformFactory(self.render, self.world, self.loader, 30, 5)
     
     # Player character
     self.player = Player(self.render, self.world, 0, 0, 0)
