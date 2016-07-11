@@ -41,7 +41,7 @@ class UpAllTheWay(ShowBase):
 
     base.setBackgroundColor(0.1, 0.1, 0.8, 1)
     base.setFrameRateMeter(True)
-    base.disableMouse()
+#     base.disableMouse()
     base.camera.setPos(self.player.getCharacterNP().getPos())
     base.camera.setHpr(self.player.getCharacterNP().getHpr())
     base.camera.lookAt(self.player.getCharacterNP())
@@ -99,6 +99,7 @@ class UpAllTheWay(ShowBase):
       base.camera.setZ(self.floater.getZ() + 15.0)
     else:
       base.camera.setZ(0.0)
+    
     base.camera.lookAt(self.floater)
     
     if (self.player.getCharacterNP().getZ() < -60):
@@ -138,8 +139,8 @@ class UpAllTheWay(ShowBase):
     Platform(self.render, self.world, self.loader, -1, str(-1), 5, 0, 0, -3)
 
     # TODO: create platform generator that takes in a number and generates that many platforms with reasonable distance
-    for i in range(6):
-      Platform(self.render, self.world, self.loader, i, str(i), 4, -(i*6+6), -(i*6+6), i*3)
+    for i in range(1):
+      Platform(self.render, self.world, self.loader, 3, str(i), 1, -(i*6+6), -(i*6+6), i*3)
     
     self.player = Player(self.render, self.world, 0, 0, 0)
 
