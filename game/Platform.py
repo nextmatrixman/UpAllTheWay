@@ -41,9 +41,6 @@ class Platform(object):
     
     if (self.collectable == 1):
       self.addItem()
-    
-  def setThing(self, thing):
-    self.thing = thing
   
   def createPlatform(self):
     platformShape = BulletBoxShape(Vec3(self.side, self.side, 0.2))
