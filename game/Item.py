@@ -2,14 +2,11 @@
 # Author: Di Shen
 # CS594 Summer 2016
 
-from direct.actor.Actor import Actor
-from panda3d.core import BitMask32
-from panda3d.bullet import BulletGhostNode, BulletSphereShape
-
 class Item(object):
-  def __init__(self, render, world, id, x, y, z):
+  def __init__(self, render, world, loader, id, x, y, z):
     self.render = render
     self.world = world
+    self.loader = loader
     self.id = id
     self.x = x
     self.y = y

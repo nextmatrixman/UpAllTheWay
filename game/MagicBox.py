@@ -3,7 +3,6 @@
 # CS594 Summer 2016
 
 from Item import Item
-from direct.actor.Actor import Actor
 from panda3d.core import BitMask32
 from panda3d.bullet import BulletGhostNode, BulletBoxShape
 from panda3d.core import Vec3
@@ -18,7 +17,7 @@ class MagicBox(Item):
     self.np.setPos(self.x, self.y, self.z - 3.2)
     self.world.attachGhost(self.ghostNode)
     
-    self.actorModelNP = Actor('models/magicbox/ToyBox.egg')
+    self.actorModelNP = self.loader.loadModel('models/magicbox/ToyBox.egg')
     self.actorModelNP.reparentTo(self.np)
     self.actorModelNP.setScale(0.35)
     self.actorModelNP.setH(180)

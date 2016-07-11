@@ -5,6 +5,7 @@
 import sys
 from Platform import Platform
 from Player import Player
+from PlatformFactory import PlatformFactory
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import AmbientLight
 from panda3d.core import DirectionalLight
@@ -136,12 +137,12 @@ class UpAllTheWay(ShowBase):
     self.world.setDebugNode(self.debugNP.node())
 
     # Floor
-    Platform(self.render, self.world, self.loader, -1, str(-1), 5, 0, 0, -3)
+    Platform(self.render, self.world, self.loader, 0, str(-1), 2, 0, 0, -3)
 
-    # TODO: create platform generator that takes in a number and generates that many platforms with reasonable distance
-    for i in range(1):
-      Platform(self.render, self.world, self.loader, 3, str(i), 1, -(i*6+6), -(i*6+6), i*3)
+    # Platforms
+    PlatformFactory(self.render, self.world, self.loader, 6, 3)
     
+    # Player character
     self.player = Player(self.render, self.world, 0, 0, 0)
 
 game = UpAllTheWay()

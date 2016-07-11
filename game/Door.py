@@ -3,7 +3,6 @@
 # CS594 Summer 2016
 
 from Item import Item
-from direct.actor.Actor import Actor
 from panda3d.core import BitMask32
 from panda3d.bullet import BulletGhostNode, BulletBoxShape
 from panda3d.core import Vec3
@@ -18,7 +17,7 @@ class Door(Item):
     self.np.setPos(self.x, self.y, self.z - 2.6)
     self.world.attachGhost(self.ghostNode)
     
-    self.actorModelNP = Actor('models/door/Doorway.egg')
+    self.actorModelNP = self.loader.loadModel('models/door/Doorway.egg')
     self.actorModelNP.reparentTo(self.np)
     self.actorModelNP.setScale(0.07)
     self.actorModelNP.setH(180)
