@@ -29,7 +29,7 @@ class PlatformFactory(object):
     
     for i in range(self.platformCount):
       self.currentSide = random.randint(1, 4)
-      self.tempOffset = self.lastSide + self.currentSide + 3
+      self.tempOffset = self.lastSide + self.currentSide + 2
       self.currentX = self.currentX + random.choice([self.tempOffset, 0, -self.tempOffset])
       self.currentY = self.currentY + self.tempOffset
       self.currentZ = self.currentZ + self.zOffset

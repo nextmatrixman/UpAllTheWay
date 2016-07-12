@@ -13,8 +13,10 @@ from panda3d.core import Vec3
 from panda3d.core import Vec4
 from panda3d.core import NodePath
 from panda3d.core import PandaNode
+from panda3d.core import TextNode
 from panda3d.bullet import BulletWorld
 from panda3d.bullet import BulletDebugNode
+from direct.gui.OnscreenText import OnscreenText
 
 class UpAllTheWay(ShowBase):
   def __init__(self):
@@ -26,6 +28,7 @@ class UpAllTheWay(ShowBase):
     # Accept the control keys for movement and rotation
     self.accept('escape', self.doExit)
     self.accept('r', self.doReset)
+    self.accept('f1', self.toggleHelp)
     self.accept('f3', self.toggleDebug)
     self.accept('space', self.player.doJump)
     self.accept("a", self.player.setKey, ["left", True])
@@ -60,6 +63,21 @@ class UpAllTheWay(ShowBase):
     # Add environment
     self.env = self.loader.loadModel("models/env/PeachSky")
     self.env.reparentTo(render)
+    
+    # Add text
+    self.collectableIndicator = "Collectable Items: 0/5"
+    self.helpIndicator = "[F1] - Help, [1] - level 1, [2] - level 2"
+    self.inst1 = self.addInstructions(0.06, self.collectableIndicator)
+    self.inst2 = self.addInstructions(0.12, self.helpIndicator)
+    
+    # Help variable
+    self.helpOn = False
+  
+  # Function to put instructions on the screen.
+  def addInstructions(self, pos, msg):
+    return OnscreenText(text=msg, style=1, fg=(1, 1, 1, 1), 
+                        scale=.05, shadow=(0, 0, 0, 1), parent = base.a2dTopLeft, 
+                        pos=(0.04, -pos - 0.02), align = TextNode.ALeft)
   
   def doExit(self):
     self.cleanup()
@@ -69,6 +87,38 @@ class UpAllTheWay(ShowBase):
     self.cleanup()
     self.setup()
 
+  def toggleHelp(self):
+    if (self.helpOn == False):
+      self.helpOn = True
+      taskMgr.remove('updateWorld')
+      self.inst1.destroy()
+      self.inst2.destroy()
+      self.inst1 = self.addInstructions(0.06, "Game paused")
+      self.inst2 = self.addInstructions(0.12, "")
+      self.inst3 = self.addInstructions(0.18, "STORY")
+      self.inst4 = self.addInstructions(0.24, "Di is a CSULA CS graduate student fighting for his CS MS degree.")
+      self.inst5 = self.addInstructions(0.30, "He's on his journey to gain his degree, but it will not be easy.")
+      self.inst6 = self.addInstructions(0.36, "He needs to go upward and collect books as knowledge, and avoid professor attacks.")
+      self.inst7 = self.addInstructions(0.42, "Eventually he will reach a new height in life and collect his diploma in a magic box!")
+      self.inst8 = self.addInstructions(0.48, "")
+      self.inst9 = self.addInstructions(0.54, "ACTION KEYS")
+      self.inst10 = self.addInstructions(0.60, "[W] - forward, [S] - reverse, [A] - turn left, [D] - turn right, [SPACE] - jump")
+    else:
+      self.helpOn = False
+      taskMgr.add(self.update, 'updateWorld')
+      self.inst1.destroy()
+      self.inst2.destroy()
+      self.inst3.destroy()
+      self.inst4.destroy()
+      self.inst5.destroy()
+      self.inst6.destroy()
+      self.inst7.destroy()
+      self.inst8.destroy()
+      self.inst9.destroy()
+      self.inst10.destroy()
+      self.inst1 = self.addInstructions(0.06, self.collectableIndicator)
+      self.inst2 = self.addInstructions(0.12, self.helpIndicator)
+  
   def toggleDebug(self):
     if self.debugNP.isHidden():
       self.debugNP.show()
@@ -130,7 +180,7 @@ class UpAllTheWay(ShowBase):
   def setup(self):
     # World
     self.debugNP = self.render.attachNewNode(BulletDebugNode('Debug'))
-    self.debugNP.show()
+    self.debugNP.hide()
 
     self.world = BulletWorld()
     self.world.setGravity(Vec3(0, 0, -9.81))
