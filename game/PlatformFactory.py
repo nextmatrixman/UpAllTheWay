@@ -27,17 +27,25 @@ class PlatformFactory(object):
   def generatePlatform(self):
     self.platformList = []
     
-    for i in range(self.platformCount):
+    for i in range(self.platformCount - 1):
       self.currentSide = random.randint(1, 4)
       self.tempOffset = self.lastSide + self.currentSide + 2
       self.currentX = self.currentX + random.choice([self.tempOffset, 0, -self.tempOffset])
       self.currentY = self.currentY + self.tempOffset
       self.currentZ = self.currentZ + self.zOffset
       self.lastSide = self.currentSide
-      
+       
       # [collectable, side, x, y, z]
       self.platformList.append([0, self.currentSide, self.currentX, self.currentY, self.currentZ])
-  
+    
+    self.currentSide = 3
+    self.tempOffset = self.lastSide + self.currentSide + 2
+    self.currentX = self.currentX + random.choice([self.tempOffset, 0, -self.tempOffset])
+    self.currentY = self.currentY + self.tempOffset
+    self.currentZ = self.currentZ + self.zOffset
+    
+    self.platformList.append([2, self.currentSide, self.currentX, self.currentY, self.currentZ])
+      
   def insertCollectable(self):
     if (self.collectableCount > 0):
       self.selected = random.randint(0, self.platformCount - 1)

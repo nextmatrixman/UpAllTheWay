@@ -14,7 +14,7 @@ class Door(Item):
     self.ghostNode.addShape(self.collisionShape)
     self.np = self.render.attachNewNode(self.ghostNode)
     self.np.setCollideMask(BitMask32.allOff())
-    self.np.setPos(self.x, self.y, self.z - 2.6)
+    self.np.setPos(self.x, self.y, self.z + 0.5)
     self.world.attachGhost(self.ghostNode)
     
     self.actorModelNP = self.loader.loadModel('models/door/Doorway.egg')

@@ -190,7 +190,7 @@ class UpAllTheWay(ShowBase):
     Platform(self.render, self.world, self.loader, 0, str(-1), 2, 0, 0, -3)
 
     # Platforms
-    PlatformFactory(self.render, self.world, self.loader, 30, 5)
+    PlatformFactory(self.render, self.world, self.loader, 30, 10)
     
     # Player character
     self.player = Player(self.render, self.world, 0, 0, 0)

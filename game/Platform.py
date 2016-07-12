@@ -34,11 +34,10 @@ class Platform(object):
     self.zOffset = 1
     self.xYOffset = self.side/10*5
     
-    if (self.thing > -1):
+    if (self.thing > -1 and self.collectable < 2):
       self.addThing()
     
-    if (self.collectable == 1):
-      self.addItem()
+    self.addItem()
   
   def createPlatform(self):
     platformShape = BulletBoxShape(Vec3(self.side, self.side, 0.2))
@@ -58,10 +57,11 @@ class Platform(object):
       Akis(self.render, self.world, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
     elif (self.thing == 1):
       Kang(self.render, self.world, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
-    elif (self.thing == 2):
-      Door(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
-    elif (self.thing == 3):
-      MagicBox(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
   
   def addItem(self):
-    Collectable(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
+    if (self.collectable == 1):
+      Collectable(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
+    elif (self.collectable == 2):
+      Door(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
+    elif (self.collectable == 3):
+      MagicBox(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
