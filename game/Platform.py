@@ -2,12 +2,10 @@
 # Author: Di Shen
 # CS594 Summer 2016
 
-from Tran import Tran
 from Akis import Akis
 from Kang import Kang
 from Collectable import Collectable
 from Door import Door
-import random
 from MagicBox import MagicBox
 from panda3d.core import BitMask32
 from panda3d.core import Vec3
@@ -25,9 +23,9 @@ class Platform(object):
     self.thing = -1
     
     if (self.side == 3):
-      self.thing = random.randint(0, 1)
+      self.thing = 0
     elif (self.side > 3):
-      self.thing = 2
+      self.thing = 1
     
     self.x = x
     self.y = y
@@ -57,14 +55,12 @@ class Platform(object):
     
   def addThing(self):
     if (self.thing == 0):
-      Tran(self.render, self.world, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
-    elif (self.thing == 1):
       Akis(self.render, self.world, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
-    elif (self.thing == 2):
+    elif (self.thing == 1):
       Kang(self.render, self.world, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
-    elif (self.thing == 3):
+    elif (self.thing == 2):
       Door(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
-    elif (self.thing == 4):
+    elif (self.thing == 3):
       MagicBox(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
   
   def addItem(self):
