@@ -65,9 +65,9 @@ class UpAllTheWay(ShowBase):
     self.env.reparentTo(render)
     
     # Add text
-    self.collectableIndicator = "Collectable Items: 0/5"
+    self.collectibleIndicator = "Level 1: collectible items - 0/5"
     self.helpIndicator = "[F1] - Help, [1] - level 1, [2] - level 2"
-    self.inst1 = self.addInstructions(0.06, self.collectableIndicator)
+    self.inst1 = self.addInstructions(0.06, self.collectibleIndicator)
     self.inst2 = self.addInstructions(0.12, self.helpIndicator)
     
     # Help variable
@@ -116,7 +116,7 @@ class UpAllTheWay(ShowBase):
       self.inst8.destroy()
       self.inst9.destroy()
       self.inst10.destroy()
-      self.inst1 = self.addInstructions(0.06, self.collectableIndicator)
+      self.inst1 = self.addInstructions(0.06, self.collectibleIndicator)
       self.inst2 = self.addInstructions(0.12, self.helpIndicator)
   
   def toggleDebug(self):

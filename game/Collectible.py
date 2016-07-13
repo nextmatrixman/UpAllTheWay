@@ -7,10 +7,10 @@ from panda3d.core import BitMask32
 from panda3d.bullet import BulletGhostNode, BulletBoxShape
 from panda3d.core import Vec3
 
-class Collectable(Item):
+class Collectible(Item):
   def createItem(self):
     self.collisionShape = BulletBoxShape(Vec3(0.5, 0.1, 0.5))
-    self.ghostNode = BulletGhostNode('Collectable' + self.id)
+    self.ghostNode = BulletGhostNode('Collectible' + self.id)
     self.ghostNode.addShape(self.collisionShape)
     self.np = self.render.attachNewNode(self.ghostNode)
     self.np.setCollideMask(BitMask32.allOff())
