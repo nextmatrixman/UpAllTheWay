@@ -63,6 +63,6 @@ class Platform(object):
     if (self.collectible == 1):
       Data.books.append(Collectible(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset))
     elif (self.collectible == 2):
-      Data.door = Door(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
+      Data.door.append(Door(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset))
     elif (self.collectible == 3):
-      Data.magicBox = MagicBox(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
+      Data.magicBox.append(MagicBox(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset))

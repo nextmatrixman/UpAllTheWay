@@ -64,6 +64,7 @@ class UpAllTheWay(ShowBase):
     self.gameMusic.setLoop()
     self.gameMusic.setVolume(0.4)
     self.gameMusic.play()
+    self.laugh = base.loader.loadSfx("sounds/laugh.ogg")
     
     # Add environment
     self.env = self.loader.loadModel("models/env/PeachSky")
@@ -165,8 +166,9 @@ class UpAllTheWay(ShowBase):
     
     base.camera.lookAt(self.floater)
     
-    if (self.player.getCharacterNP().getZ() < -60):
+    if (self.player.getCharacterNP().getZ() < -40):
       self.player.resetCharacter()
+      self.laugh.play()
 
     return task.cont
 
@@ -211,15 +213,16 @@ class UpAllTheWay(ShowBase):
   def processContacts(self):
     if (len(Data.books) > 0):
       for book in Data.books:
-        self.testWithSingleBody(book)
+        self.contactTest(book)
     
-    self.testWithSingleBody(Data.door)
+    if (len(Data.door) > 0):
+      self.contactTest(Data.door[0])
         
-  def testWithSingleBody(self, secondNode):
+  def contactTest(self, secondNode):
     name = secondNode.getGhostNode().getName()
-    contactResult1 = self.world.contactTestPair(self.player.getCharacter(), secondNode.getGhostNode())
+    contactResult = self.world.contactTestPair(self.player.getCharacter(), secondNode.getGhostNode())
     
-    if len(contactResult1.getContacts()) > 0:
+    if len(contactResult.getContacts()) > 0:
       if ("Collectible" in name):
         secondNode.getActorModelNP().removeNode()
         
