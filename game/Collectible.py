@@ -22,3 +22,6 @@ class Collectible(Item):
     self.actorModelNP.setScale(1.0)
     self.actorModelNP.setH(180)
     self.actorModelNP.setPos(-0.3, 0, -0.5)
+  
+  def getGhostNode(self):
+    return self.ghostNode

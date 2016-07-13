@@ -2,6 +2,7 @@
 # Author: Di Shen
 # CS594 Summer 2016
 
+from Data import Data
 from Akis import Akis
 from Kang import Kang
 from Collectible import Collectible
@@ -60,7 +61,7 @@ class Platform(object):
   
   def addItem(self):
     if (self.collectible == 1):
-      Collectible(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
+      Data.books.append(Collectible(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset))
     elif (self.collectible == 2):
       Door(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
     elif (self.collectible == 3):

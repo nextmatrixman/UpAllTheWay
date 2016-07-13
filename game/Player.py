@@ -94,6 +94,9 @@ class Player(object):
   def getCharacterNP(self):
     return self.characterNP
   
+  def getCharacter(self):
+    return self.character
+  
   def resetCharacter(self):
     self.characterNP.setPos(self.initialX, self.initialY, self.initialZ)
     self.actorNP.setPos(self.initialX, self.initialY, self.initialZ + 0.27)

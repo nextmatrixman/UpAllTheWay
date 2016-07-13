@@ -4,6 +4,7 @@
 
 import sys
 from Platform import Platform
+from Data import Data
 from Player import Player
 from PlatformFactory import PlatformFactory
 from direct.showbase.ShowBase import ShowBase
@@ -24,6 +25,9 @@ class UpAllTheWay(ShowBase):
 
     self.setupLights()
     self.setup()
+    
+    self.collectibleCounter = 0
+    self.collectibleTotal = 5
     
     # Accept the control keys for movement and rotation
     self.accept('escape', self.doExit)
@@ -65,7 +69,7 @@ class UpAllTheWay(ShowBase):
     self.env.reparentTo(render)
     
     # Add text
-    self.collectibleIndicator = "Level 1: collectible items - 0/5"
+    self.collectibleIndicator = "Level 1: collectible items - " + str(self.collectibleCounter) + "/" + str(self.collectibleTotal)
     self.helpIndicator = "[F1] - Help, [1] - level 1, [2] - level 2"
     self.inst1 = self.addInstructions(0.06, self.collectibleIndicator)
     self.inst2 = self.addInstructions(0.12, self.helpIndicator)
@@ -129,6 +133,7 @@ class UpAllTheWay(ShowBase):
     dt = globalClock.getDt()
     self.player.move(dt)
     self.world.doPhysics(dt, 4, 1./240.)
+    self.processContacts()
 
     camvec = self.player.getCharacterNP().getPos() - base.camera.getPos()
     camvec.setZ(0)
@@ -194,6 +199,20 @@ class UpAllTheWay(ShowBase):
     
     # Player character
     self.player = Player(self.render, self.world, 0, 0, 0)
+  
+  # hadle contacts
+  def processContacts(self):
+    if (len(Data.books) > 0):
+      for book in Data.books:
+        self.testWithSingleBody(book.getGhostNode())
+        
+  def testWithSingleBody(self, secondNode):
+    contactResult = self.world.contactTestPair(self.player.getCharacter(), secondNode)
+    if len(contactResult.getContacts()) > 0:
+      self.collectibleCounter += 1
+      self.inst1.destroy()
+      self.inst1 = self.addInstructions(0.06, self.collectibleIndicator)
+      print secondNode.getName() + " is collected!"
 
 game = UpAllTheWay()
 game.run()
