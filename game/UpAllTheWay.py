@@ -23,11 +23,12 @@ class UpAllTheWay(ShowBase):
   def __init__(self):
     ShowBase.__init__(self)
 
+    self.platformCount = 30
+    self.collectibleCounter = 0
+    self.collectibleTotal = 10
+    
     self.setupLights()
     self.setup()
-    
-    self.collectibleCounter = 0
-    self.collectibleTotal = 5
     
     # Accept the control keys for movement and rotation
     self.accept('escape', self.doExit)
@@ -83,6 +84,11 @@ class UpAllTheWay(ShowBase):
                         scale=.05, shadow=(0, 0, 0, 1), parent = base.a2dTopLeft, 
                         pos=(0.04, -pos - 0.02), align = TextNode.ALeft)
   
+  def addVictoryText(self):
+    return OnscreenText(text="YOU WIN!!!", style=1, fg=(1, 1, 1, 1), 
+                        scale=.25, shadow=(0, 0, 0, 1), parent = base.a2dTopLeft, 
+                        pos=(0.75, -1), align = TextNode.ALeft)
+  
   def doExit(self):
     self.cleanup()
     sys.exit(1)
@@ -134,6 +140,7 @@ class UpAllTheWay(ShowBase):
     self.player.move(dt)
     self.world.doPhysics(dt, 4, 1./240.)
     self.processContacts()
+    self.refreshCollectibleCount()
 
     camvec = self.player.getCharacterNP().getPos() - base.camera.getPos()
     camvec.setZ(0)
@@ -191,28 +198,49 @@ class UpAllTheWay(ShowBase):
     self.world.setGravity(Vec3(0, 0, -9.81))
     self.world.setDebugNode(self.debugNP.node())
 
-    # Floor
+    # Create starting platform
     Platform(self.render, self.world, self.loader, 0, str(-1), 2, 0, 0, -3)
 
-    # Platforms
-    PlatformFactory(self.render, self.world, self.loader, 30, 10)
+    # Generate platforms
+    PlatformFactory(self.render, self.world, self.loader, self.platformCount, self.collectibleTotal)
     
-    # Player character
+    # Create player character
     self.player = Player(self.render, self.world, 0, 0, 0)
   
-  # hadle contacts
+  # Handle contacts
   def processContacts(self):
     if (len(Data.books) > 0):
       for book in Data.books:
-        self.testWithSingleBody(book.getGhostNode())
+        self.testWithSingleBody(book)
+    
+    self.testWithSingleBody(Data.door)
         
   def testWithSingleBody(self, secondNode):
-    contactResult = self.world.contactTestPair(self.player.getCharacter(), secondNode)
-    if len(contactResult.getContacts()) > 0:
-      self.collectibleCounter += 1
-      self.inst1.destroy()
-      self.inst1 = self.addInstructions(0.06, self.collectibleIndicator)
-      print secondNode.getName() + " is collected!"
+    name = secondNode.getGhostNode().getName()
+    contactResult1 = self.world.contactTestPair(self.player.getCharacter(), secondNode.getGhostNode())
+    
+    if len(contactResult1.getContacts()) > 0:
+      if ("Collectible" in name):
+        secondNode.getActorModelNP().removeNode()
+        
+        if (secondNode.getCollected() == False):
+          secondNode.setCollected(True)
+      elif ("Door" in name):
+        if (self.collectibleCounter == self.collectibleTotal):
+          taskMgr.remove('updateWorld')
+          self.addVictoryText()
+          
+  def refreshCollectibleCount(self):
+    sum = 0
+    
+    for book in Data.books:
+      if (book.getCollected() == True):
+        sum += 1
+    
+    self.collectibleCounter = sum
+    self.collectibleIndicator = "Level 1: collectible items - " + str(self.collectibleCounter) + "/" + str(self.collectibleTotal)
+    self.inst1.destroy()
+    self.inst1 = self.addInstructions(0.06, self.collectibleIndicator)
 
 game = UpAllTheWay()
 game.run()

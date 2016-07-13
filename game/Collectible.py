@@ -9,12 +9,13 @@ from panda3d.core import Vec3
 
 class Collectible(Item):
   def createItem(self):
+    self.collected = False
     self.collisionShape = BulletBoxShape(Vec3(0.5, 0.1, 0.5))
     self.ghostNode = BulletGhostNode('Collectible' + self.id)
     self.ghostNode.addShape(self.collisionShape)
     self.np = self.render.attachNewNode(self.ghostNode)
     self.np.setCollideMask(BitMask32.allOff())
-    self.np.setPos(self.x, self.y, self.z)
+    self.np.setPos(self.x + 0.7, self.y + 0.7, self.z)
     self.world.attachGhost(self.ghostNode)
     
     self.actorModelNP = self.loader.loadModel('models/book/Book.egg')
@@ -25,3 +26,12 @@ class Collectible(Item):
   
   def getGhostNode(self):
     return self.ghostNode
+  
+  def getActorModelNP(self):
+    return self.actorModelNP
+  
+  def getCollected(self):
+    return self.collected
+  
+  def setCollected(self, collected):
+    self.collected = collected

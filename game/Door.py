@@ -22,3 +22,6 @@ class Door(Item):
     self.actorModelNP.setScale(0.07)
     self.actorModelNP.setH(180)
     self.actorModelNP.setPos(0, 0, -0.2)
+
+  def getGhostNode(self):
+    return self.ghostNode
