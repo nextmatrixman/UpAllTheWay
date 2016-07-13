@@ -26,6 +26,8 @@ class UpAllTheWay(ShowBase):
     self.platformCount = 30
     self.collectibleCounter = 0
     self.collectibleTotal = 10
+    self.frameRate = 60
+    self.maxTime = 7200
     
     self.setupLights()
     self.setup()
@@ -72,9 +74,11 @@ class UpAllTheWay(ShowBase):
     
     # Add text
     self.collectibleIndicator = "Level 1: collectible items - " + str(self.collectibleCounter) + "/" + str(self.collectibleTotal)
+    self.timeIndicator = "Time left - " + str(self.maxTime/self.frameRate)
     self.helpIndicator = "[F1] - Help, [1] - level 1, [2] - level 2"
     self.inst1 = self.addInstructions(0.06, self.collectibleIndicator)
-    self.inst2 = self.addInstructions(0.12, self.helpIndicator)
+    self.inst2 = self.addInstructions(0.12, self.timeIndicator)
+    self.inst3 = self.addInstructions(0.18, self.helpIndicator)
     
     # Help variable
     self.helpOn = False
@@ -85,8 +89,8 @@ class UpAllTheWay(ShowBase):
                         scale=.05, shadow=(0, 0, 0, 1), parent = base.a2dTopLeft, 
                         pos=(0.04, -pos - 0.02), align = TextNode.ALeft)
   
-  def addVictoryText(self):
-    return OnscreenText(text="YOU WIN!!!", style=1, fg=(1, 1, 1, 1), 
+  def addVictoryText(self, msg):
+    return OnscreenText(text=msg, style=1, fg=(1, 1, 1, 1), 
                         scale=.25, shadow=(0, 0, 0, 1), parent = base.a2dTopLeft, 
                         pos=(0.75, -1), align = TextNode.ALeft)
   
@@ -104,6 +108,7 @@ class UpAllTheWay(ShowBase):
       taskMgr.remove('updateWorld')
       self.inst1.destroy()
       self.inst2.destroy()
+      self.inst3.destroy()
       self.inst1 = self.addInstructions(0.06, "Game paused")
       self.inst2 = self.addInstructions(0.12, "")
       self.inst3 = self.addInstructions(0.18, "STORY")
@@ -128,7 +133,8 @@ class UpAllTheWay(ShowBase):
       self.inst9.destroy()
       self.inst10.destroy()
       self.inst1 = self.addInstructions(0.06, self.collectibleIndicator)
-      self.inst2 = self.addInstructions(0.12, self.helpIndicator)
+      self.inst2 = self.addInstructions(0.12, self.timeIndicator)
+      self.inst3 = self.addInstructions(0.18, self.helpIndicator)
   
   def toggleDebug(self):
     if self.debugNP.isHidden():
@@ -141,6 +147,7 @@ class UpAllTheWay(ShowBase):
     self.player.move(dt)
     self.world.doPhysics(dt, 4, 1./240.)
     self.processContacts()
+    self.countdown()
     self.refreshCollectibleCount()
 
     camvec = self.player.getCharacterNP().getPos() - base.camera.getPos()
@@ -231,9 +238,10 @@ class UpAllTheWay(ShowBase):
       elif ("Door" in name):
         if (self.collectibleCounter == self.collectibleTotal):
           taskMgr.remove('updateWorld')
-          self.addVictoryText()
+          self.addVictoryText("YOU WIN!!!")
           
   def refreshCollectibleCount(self):
+    # refresh collectible count
     sum = 0
     
     for book in Data.books:
@@ -244,6 +252,18 @@ class UpAllTheWay(ShowBase):
     self.collectibleIndicator = "Level 1: collectible items - " + str(self.collectibleCounter) + "/" + str(self.collectibleTotal)
     self.inst1.destroy()
     self.inst1 = self.addInstructions(0.06, self.collectibleIndicator)
+    
+    # refresh time
+    self.timeIndicator = "Time left - " + str(self.maxTime/self.frameRate)
+    self.inst2.destroy()
+    self.inst2 = self.addInstructions(0.12, self.timeIndicator)
+  
+  def countdown(self):
+    if (self.maxTime > 0):
+      self.maxTime -= 1
+    elif (self.maxTime == 0):
+      taskMgr.remove('updateWorld')
+      self.addVictoryText("YOU LOOSE!!!")
 
 game = UpAllTheWay()
 game.run()
