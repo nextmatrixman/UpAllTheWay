@@ -238,7 +238,7 @@ class UpAllTheWay(ShowBase):
       elif ("Door" in name):
         if (self.collectibleCounter == self.collectibleTotal):
           taskMgr.remove('updateWorld')
-          self.addVictoryText("YOU WIN!!!")
+          self.addVictoryText("YOU WON!!!")
           
   def refreshCollectibleCount(self):
     # refresh collectible count
@@ -263,7 +263,7 @@ class UpAllTheWay(ShowBase):
       self.maxTime -= 1
     elif (self.maxTime == 0):
       taskMgr.remove('updateWorld')
-      self.addVictoryText("YOU LOOSE!!!")
+      self.addVictoryText("YOU LOST!!")
 
 game = UpAllTheWay()
 game.run()
