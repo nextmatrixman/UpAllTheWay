@@ -25,3 +25,6 @@ class Door(Item):
 
   def getGhostNode(self):
     return self.ghostNode
+  
+  def getNP(self):
+    return self.np

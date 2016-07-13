@@ -9,7 +9,6 @@ from panda3d.core import Vec3
 
 class Collectible(Item):
   def createItem(self):
-    self.collected = False
     self.collisionShape = BulletBoxShape(Vec3(0.5, 0.1, 0.5))
     self.ghostNode = BulletGhostNode('Collectible' + self.id)
     self.ghostNode.addShape(self.collisionShape)
@@ -27,11 +26,14 @@ class Collectible(Item):
   def getGhostNode(self):
     return self.ghostNode
   
+  def killCollectibleNode(self):
+    self.np.setPos(100, 100, 100)
+  
   def getActorModelNP(self):
     return self.actorModelNP
   
-  def getCollected(self):
-    return self.collected
+  def getNP(self):
+    return self.np
   
   def setCollected(self, collected):
     self.collected = collected

@@ -28,6 +28,7 @@ class UpAllTheWay(ShowBase):
     self.collectibleTotal = 10
     self.frameRate = 60
     self.maxTime = 7200
+    self.contactDistance = 1
     
     self.setupLights()
     self.setup()
@@ -60,13 +61,6 @@ class UpAllTheWay(ShowBase):
     # variable in a variety of calculations.
     self.floater = NodePath(PandaNode("floater"))
     self.floater.reparentTo(render)
-    
-    # Add sound effects
-    self.gameMusic = base.loader.loadSfx("sounds/level1.mp3")
-    self.gameMusic.setLoop()
-    self.gameMusic.setVolume(0.4)
-    self.gameMusic.play()
-    self.laugh = base.loader.loadSfx("sounds/laugh.ogg")
     
     # Add environment
     self.env = self.loader.loadModel("models/env/PeachSky")
@@ -175,7 +169,7 @@ class UpAllTheWay(ShowBase):
     
     if (self.player.getCharacterNP().getZ() < -40):
       self.player.resetCharacter()
-      self.laugh.play()
+      self.laughSound.play()
 
     return task.cont
 
@@ -215,6 +209,14 @@ class UpAllTheWay(ShowBase):
     
     # Create player character
     self.player = Player(self.render, self.world, 0, 0, 0)
+    
+    # Music and sound
+    self.gameMusic = base.loader.loadSfx("sounds/level1.mp3")
+    self.gameMusic.setLoop()
+    self.gameMusic.setVolume(0.4)
+    self.gameMusic.play()
+    self.laughSound = base.loader.loadSfx("sounds/laugh.ogg")
+    self.collectSound = base.loader.loadSfx("sounds/collect.mp3")
   
   # Handle contacts
   def processContacts(self):
@@ -224,31 +226,22 @@ class UpAllTheWay(ShowBase):
     
     if (len(Data.door) > 0):
       self.contactTest(Data.door[0])
-        
+
   def contactTest(self, secondNode):
     name = secondNode.getGhostNode().getName()
-    contactResult = self.world.contactTestPair(self.player.getCharacter(), secondNode.getGhostNode())
     
-    if len(contactResult.getContacts()) > 0:
+    if (self.getDistance(self.player.getCharacterNP(), secondNode.getNP()) <= self.contactDistance):
       if ("Collectible" in name):
+        secondNode.killCollectibleNode()
         secondNode.getActorModelNP().removeNode()
-        
-        if (secondNode.getCollected() == False):
-          secondNode.setCollected(True)
+        self.collectSound.play()
+        self.collectibleCounter += 1
       elif ("Door" in name):
         if (self.collectibleCounter == self.collectibleTotal):
           taskMgr.remove('updateWorld')
           self.addVictoryText("YOU WON!!!")
           
   def refreshCollectibleCount(self):
-    # refresh collectible count
-    sum = 0
-    
-    for book in Data.books:
-      if (book.getCollected() == True):
-        sum += 1
-    
-    self.collectibleCounter = sum
     self.collectibleIndicator = "Level 1: collectible items - " + str(self.collectibleCounter) + "/" + str(self.collectibleTotal)
     self.inst1.destroy()
     self.inst1 = self.addInstructions(0.06, self.collectibleIndicator)
@@ -264,6 +257,12 @@ class UpAllTheWay(ShowBase):
     elif (self.maxTime == 0):
       taskMgr.remove('updateWorld')
       self.addVictoryText("YOU LOST!!")
+      
+  # UTIL METHODS
+  def getDistance(self, one, two):
+#     return (abs(one.getX() - two.getX())**2 + abs(one.getY() - two.getY())**2) ** 0.5
+    vec = one.getPos() - two.getPos()
+    return vec.length()
 
 game = UpAllTheWay()
 game.run()
