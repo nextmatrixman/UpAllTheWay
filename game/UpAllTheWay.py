@@ -23,9 +23,9 @@ class UpAllTheWay(ShowBase):
   def __init__(self):
     ShowBase.__init__(self)
 
-    self.platformCount = 30
+    self.platformCount = 15
     self.collectibleCounter = 0
-    self.collectibleTotal = 10
+    self.collectibleTotal = 5
     self.frameRate = 60
     self.maxTime = 7200
     self.contactDistance = 1
