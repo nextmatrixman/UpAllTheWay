@@ -11,17 +11,23 @@ from panda3d.bullet import BulletRigidBodyNode, BulletBoxShape
 class Kang(Enemy):
   def createCharacter(self):
     self.shape = BulletBoxShape(Vec3(0.4, 0.4, 0.85))
-    self.actor = BulletRigidBodyNode('Enemy' + self.id)
-    self.actor.setMass(5.0)
-    self.actorNP = self.render.attachNewNode(self.actor)
-    self.actorNP.node().addShape(self.shape)
-    self.actorNP.setPos(self.x, self.y, self.z)
-    self.actorNP.setCollideMask(BitMask32.allOn())
-    self.world.attachRigidBody(self.actorNP.node())
+    self.actor = BulletRigidBodyNode('Kang' + self.id)
+#     self.actor.setMass(5.0)
+    self.np = self.render.attachNewNode(self.actor)
+    self.np.node().addShape(self.shape)
+    self.np.setPos(self.x, self.y, self.z)
+    self.np.setCollideMask(BitMask32.allOn())
+    self.world.attachRigidBody(self.np.node())
     
     self.actorModelNP = Actor('models/Eve/eve.egg.pz', {
                      'run': 'models/Eve/eve_run.egg.pz'})
-    self.actorModelNP.reparentTo(self.actorNP)
+    self.actorModelNP.reparentTo(self.np)
     self.actorModelNP.setScale(0.3048)
     self.actorModelNP.setH(180)
     self.actorModelNP.setPos(0, 0, -0.82)
+    
+  def getActor(self):
+    return self.actor
+  
+  def getNP(self):
+    return self.np

@@ -226,13 +226,17 @@ class UpAllTheWay(ShowBase):
     
     if (len(Data.door) > 0):
       self.contactTest(Data.door[0])
+      
+    if (len(Data.akises) > 0):
+      for akis in Data.akises:
+        self.contactTest(akis)
 
   def contactTest(self, secondNode):
-    name = secondNode.getGhostNode().getName()
+    name = secondNode.getActor().getName()
     
     if (self.getDistance(self.player.getCharacterNP(), secondNode.getNP()) <= self.contactDistance):
       if ("Collectible" in name):
-        secondNode.killCollectibleNode()
+        secondNode.killNP()
         secondNode.getActorModelNP().removeNode()
         self.collectSound.play()
         self.collectibleCounter += 1
@@ -240,6 +244,9 @@ class UpAllTheWay(ShowBase):
         if (self.collectibleCounter == self.collectibleTotal):
           taskMgr.remove('updateWorld')
           self.addVictoryText("YOU WON!!!")
+      elif ("Akis" in name):
+        self.player.resetCharacter()
+        self.laughSound.play()
           
   def refreshCollectibleCount(self):
     self.collectibleIndicator = "Level 1: collectible items - " + str(self.collectibleCounter) + "/" + str(self.collectibleTotal)
@@ -260,7 +267,6 @@ class UpAllTheWay(ShowBase):
       
   # UTIL METHODS
   def getDistance(self, one, two):
-#     return (abs(one.getX() - two.getX())**2 + abs(one.getY() - two.getY())**2) ** 0.5
     vec = one.getPos() - two.getPos()
     return vec.length()
 

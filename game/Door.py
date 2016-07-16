@@ -4,18 +4,18 @@
 
 from Item import Item
 from panda3d.core import BitMask32
-from panda3d.bullet import BulletGhostNode, BulletBoxShape
+from panda3d.bullet import BulletRigidBodyNode, BulletBoxShape
 from panda3d.core import Vec3
 
 class Door(Item):
   def createItem(self):
     self.collisionShape = BulletBoxShape(Vec3(1.2, 0.2, 1.2))
-    self.ghostNode = BulletGhostNode('Door' + self.id)
-    self.ghostNode.addShape(self.collisionShape)
-    self.np = self.render.attachNewNode(self.ghostNode)
+    self.rigidNode = BulletRigidBodyNode('Door' + self.id)
+    self.rigidNode.addShape(self.collisionShape)
+    self.np = self.render.attachNewNode(self.rigidNode)
     self.np.setCollideMask(BitMask32.allOff())
     self.np.setPos(self.x, self.y, self.z + 0.5)
-    self.world.attachGhost(self.ghostNode)
+    self.world.attachRigidBody(self.rigidNode)
     
     self.actorModelNP = self.loader.loadModel('models/door/Doorway.egg')
     self.actorModelNP.reparentTo(self.np)
@@ -23,8 +23,8 @@ class Door(Item):
     self.actorModelNP.setH(180)
     self.actorModelNP.setPos(0, 0, -0.2)
 
-  def getGhostNode(self):
-    return self.ghostNode
+  def getActor(self):
+    return self.rigidNode
   
   def getNP(self):
     return self.np

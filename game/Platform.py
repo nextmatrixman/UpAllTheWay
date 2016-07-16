@@ -50,14 +50,14 @@ class Platform(object):
     
     platformModel = self.loader.loadModel("models/stone-cube/stone")
     platformModel.setScale(self.side*2, self.side*2, 0.2*2)
-    platformModel.setPos(self.x, self.y, self.z-0.2) # z is offset by 0.5
+    platformModel.setPos(self.x, self.y, self.z-0.2)
     platformModel.reparentTo(self.render)
     
   def addThing(self):
     if (self.thing == 0):
-      Akis(self.render, self.world, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
+      Data.akises.append(Akis(self.render, self.world, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset))
     elif (self.thing == 1):
-      Kang(self.render, self.world, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset)
+      Data.kangs.append(Kang(self.render, self.world, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset))
   
   def addItem(self):
     if (self.collectible == 1):

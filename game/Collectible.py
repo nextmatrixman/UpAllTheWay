@@ -4,18 +4,18 @@
 
 from Item import Item
 from panda3d.core import BitMask32
-from panda3d.bullet import BulletGhostNode, BulletBoxShape
+from panda3d.bullet import BulletRigidBodyNode, BulletBoxShape
 from panda3d.core import Vec3
 
 class Collectible(Item):
   def createItem(self):
-    self.collisionShape = BulletBoxShape(Vec3(0.5, 0.1, 0.5))
-    self.ghostNode = BulletGhostNode('Collectible' + self.id)
-    self.ghostNode.addShape(self.collisionShape)
-    self.np = self.render.attachNewNode(self.ghostNode)
+    self.shape = BulletBoxShape(Vec3(0.5, 0.1, 0.5))
+    self.actor = BulletRigidBodyNode('Collectible' + self.id)
+    self.actor.addShape(self.shape)
+    self.np = self.render.attachNewNode(self.actor)
     self.np.setCollideMask(BitMask32.allOff())
     self.np.setPos(self.x + 0.7, self.y + 0.7, self.z)
-    self.world.attachGhost(self.ghostNode)
+    self.world.attachRigidBody(self.actor)
     
     self.actorModelNP = self.loader.loadModel('models/book/Book.egg')
     self.actorModelNP.reparentTo(self.np)
@@ -23,17 +23,14 @@ class Collectible(Item):
     self.actorModelNP.setH(180)
     self.actorModelNP.setPos(-0.3, 0, -0.5)
   
-  def getGhostNode(self):
-    return self.ghostNode
-  
-  def killCollectibleNode(self):
-    self.np.setPos(100, 100, 100)
-  
-  def getActorModelNP(self):
-    return self.actorModelNP
-  
+  def getActor(self):
+    return self.actor
+
   def getNP(self):
     return self.np
   
-  def setCollected(self, collected):
-    self.collected = collected
+  def getActorModelNP(self):
+    return self.actorModelNP
+
+  def killNP(self):
+    self.np.setPos(100, 100, 100)
