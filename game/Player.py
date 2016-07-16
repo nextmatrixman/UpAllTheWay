@@ -64,7 +64,7 @@ class Player(object):
     self.actorNP.play("jump")
     self.jumpSound.play()
   
-  def move(self, dt):
+  def move(self):
     speed = Vec3(0, 0, 0)
     omega = 0.0
     

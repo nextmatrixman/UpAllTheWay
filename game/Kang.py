@@ -25,9 +25,3 @@ class Kang(Enemy):
     self.actorModelNP.setScale(0.3048)
     self.actorModelNP.setH(180)
     self.actorModelNP.setPos(0, 0, -0.82)
-    
-  def getActor(self):
-    return self.actor
-  
-  def getNP(self):
-    return self.np

@@ -139,7 +139,7 @@ class UpAllTheWay(ShowBase):
               
   def update(self, task):
     dt = globalClock.getDt()
-    self.player.move(dt)
+    self.player.move()
     self.world.doPhysics(dt, 4, 1./240.)
     self.processMovements()
     self.countdown()

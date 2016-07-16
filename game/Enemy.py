@@ -11,20 +11,10 @@ class Enemy(object):
     self.y = y
     self.z = z
     
-    # Game state variables
-    self.isMoving = False
-    
-    # Defining sound effects
-    self.runSound = base.loader.loadSfx("sounds/running.ogg")
-    
     self.createCharacter()
   
-  def move(self, dt):
-    print 'need AI'
-    # when distance between player and this is < threashold
-    # this.setPos(player pos)
-    # this.lookAt player
-    # isMoving = true
+  def getActor(self):
+    return self.actor
   
-  def getCharacterNP(self):
-    return self.characterNP
+  def getNP(self):
+    return self.np
