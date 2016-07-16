@@ -52,7 +52,7 @@ class Player(object):
     self.actorNP.reparentTo(self.characterNP)
     self.actorNP.setScale(0.3048)
     self.actorNP.setH(180)
-    self.actorNP.setPos(self.x, self.y, self.z + 0.27)
+    self.actorNP.setPos(0, 0, 0.27)
     
   def setKey(self, key, value):
     self.keyMap[key] = value
@@ -96,6 +96,9 @@ class Player(object):
   
   def getCharacter(self):
     return self.character
+  
+  def getActrorNP(self):
+    return self.actorNP
   
   def resetCharacter(self):
     self.characterNP.setPos(self.initialX, self.initialY, self.initialZ)

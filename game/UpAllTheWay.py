@@ -29,6 +29,7 @@ class UpAllTheWay(ShowBase):
     self.frameRate = 60
     self.maxTime = 7200
     self.contactDistance = 1
+    self.detectDistance = 4
     
     self.setupLights()
     self.setup()
@@ -140,7 +141,7 @@ class UpAllTheWay(ShowBase):
     dt = globalClock.getDt()
     self.player.move(dt)
     self.world.doPhysics(dt, 4, 1./240.)
-    self.processContacts()
+    self.processMovements()
     self.countdown()
     self.refreshCollectibleCount()
 
@@ -219,25 +220,37 @@ class UpAllTheWay(ShowBase):
     self.collectSound = base.loader.loadSfx("sounds/collect.mp3")
   
   # Handle contacts
-  def processContacts(self):
+  def processMovements(self):
     if (len(Data.books) > 0):
       for book in Data.books:
-        self.contactTest(book)
+        self.distanceTest(book)
     
     if (len(Data.door) > 0):
-      self.contactTest(Data.door[0])
+      self.distanceTest(Data.door[0])
       
     if (len(Data.akises) > 0):
       for akis in Data.akises:
-        self.contactTest(akis)
+        self.distanceTest(akis)
+        
+    if (len(Data.kangs) > 0):
+      for kang in Data.kangs:
+        self.distanceTest(kang)
 
-  def contactTest(self, secondNode):
-    name = secondNode.getActor().getName()
+  def distanceTest(self, secondObject):
+    name = secondObject.getActor().getName()
+    distance = self.getDistance(self.player.getCharacterNP(), secondObject.getNP())
     
-    if (self.getDistance(self.player.getCharacterNP(), secondNode.getNP()) <= self.contactDistance):
+    if (distance > self.contactDistance and distance <= self.detectDistance):
+      if ("Akis" in name):
+        secondObject.move(self.player)
+      elif ("Kang" in name):
+        # drop things onto player
+        print "something"
+    
+    if (distance <= self.contactDistance):
       if ("Collectible" in name):
-        secondNode.killNP()
-        secondNode.getActorModelNP().removeNode()
+        secondObject.killNP()
+        secondObject.getActorModelNP().removeNode()
         self.collectSound.play()
         self.collectibleCounter += 1
       elif ("Door" in name):

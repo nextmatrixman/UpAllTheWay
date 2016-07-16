@@ -12,7 +12,7 @@ class Akis(Enemy):
   def createCharacter(self):
     self.shape = BulletBoxShape(Vec3(0.4, 0.4, 0.85))
     self.actor = BulletRigidBodyNode('Akis' + self.id)
-#     self.actor.setMass(5.0)
+    self.actor.setMass(5.0)
     self.np = self.render.attachNewNode(self.actor)
     self.np.node().addShape(self.shape)
     self.np.setPos(self.x, self.y, self.z)
@@ -31,3 +31,12 @@ class Akis(Enemy):
   
   def getNP(self):
     return self.np
+  
+  def move(self, player):
+    playerNP = player.getCharacterNP()
+    self.np.lookAt(playerNP.getX(), playerNP.getY(), self.np.getZ())
+    vec = playerNP.getPos() - self.np.getPos()
+    vec.setZ(0)
+    dist = vec.length()
+    vec.normalize()
+    self.np.setPos(self.np.getPos() + vec * dist * 0.01)
