@@ -1,13 +1,14 @@
 class Data(object):
   # GAME PARAMETERS
-  platformCount = 3
+  platformCount = 2
   collectibleTotal = 1
   timeAllowed = 120
-  contactDistance = 1
-  detectDistance = 4
   ballDropRate = 1
   
   # OTHER PARAMETERS
+  contactDistance = 1
+  winningDistance = 1.5
+  detectDistance = 4
   collectibleCounter = 0
   frameRate = 60
   maxTime = timeAllowed * frameRate

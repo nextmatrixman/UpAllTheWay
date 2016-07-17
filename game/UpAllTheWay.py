@@ -241,16 +241,18 @@ class UpAllTheWay(ShowBase):
       if ("Kang" in name and Data.maxTime % Data.dropRate == 0):
         secondObject.drop(self.player)
     
+    if (distance <= Data.winningDistance):
+      if ("Door" in name):
+        if (Data.collectibleCounter == Data.collectibleTotal):
+          taskMgr.remove('updateWorld')
+          self.addVictoryText("YOU WON!!!")
+    
     if (distance <= Data.contactDistance):
       if ("Collectible" in name):
         secondObject.killNP()
         secondObject.getActorModelNP().removeNode()
         self.collectSound.play()
         Data.collectibleCounter += 1
-      elif ("Door" in name):
-        if (Data.collectibleCounter == Data.collectibleTotal):
-          taskMgr.remove('updateWorld')
-          self.addVictoryText("YOU WON!!!")
       elif ("Akis" in name or "Kang" in name or "Ball" in name):
         self.player.resetCharacter()
         self.laughSound.play()
