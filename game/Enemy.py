@@ -3,9 +3,10 @@
 # CS594 Summer 2016
 
 class Enemy(object):
-  def __init__(self, render, world, id, x, y, z):
+  def __init__(self, render, world, loader, id, x, y, z):
     self.render = render
     self.world = world
+    self.loader = loader
     self.id = id
     self.x = x
     self.y = y

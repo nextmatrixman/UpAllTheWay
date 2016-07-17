@@ -7,6 +7,7 @@ from Platform import Platform
 from Data import Data
 from Player import Player
 from PlatformFactory import PlatformFactory
+from Ball import Ball
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import AmbientLight
 from panda3d.core import DirectionalLight
@@ -235,6 +236,10 @@ class UpAllTheWay(ShowBase):
     if (len(Data.kangs) > 0):
       for kang in Data.kangs:
         self.distanceTest(kang)
+        
+    if (len(Data.balls) > 0):
+      for ball in Data.balls:
+        self.distanceTest(ball)
 
   def distanceTest(self, secondObject):
     name = secondObject.getActor().getName()
@@ -243,6 +248,8 @@ class UpAllTheWay(ShowBase):
     if (distance > self.contactDistance and distance <= self.detectDistance):
       if ("Akis" in name or "Kang" in name):
         secondObject.move(self.player)
+      if ("Kang" in name and self.maxTime%60 == 0):
+        secondObject.drop(self.player)
     
     if (distance <= self.contactDistance):
       if ("Collectible" in name):
@@ -254,7 +261,7 @@ class UpAllTheWay(ShowBase):
         if (self.collectibleCounter == self.collectibleTotal):
           taskMgr.remove('updateWorld')
           self.addVictoryText("YOU WON!!!")
-      elif ("Akis" in name):
+      elif ("Akis" in name or "Kang" in name or "Ball" in name):
         self.player.resetCharacter()
         self.laughSound.play()
           

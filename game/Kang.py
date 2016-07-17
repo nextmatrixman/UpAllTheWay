@@ -3,6 +3,8 @@
 # CS594 Summer 2016
 
 from Enemy import Enemy
+from Data import Data
+from Ball import Ball
 from direct.actor.Actor import Actor
 from panda3d.core import Vec3
 from panda3d.core import BitMask32
@@ -29,3 +31,6 @@ class Kang(Enemy):
   def move(self, player):
     playerNP = player.getCharacterNP()
     self.np.lookAt(playerNP.getX(), playerNP.getY(), self.np.getZ())
+    
+  def drop(self, player):
+    Data.balls.append(Ball(self.render, self.world, self.loader, player))

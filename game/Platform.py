@@ -55,9 +55,9 @@ class Platform(object):
     
   def addThing(self):
     if (self.thing == 0):
-      Data.akises.append(Akis(self.render, self.world, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset))
+      Data.akises.append(Akis(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset))
     elif (self.thing == 1):
-      Data.kangs.append(Kang(self.render, self.world, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset))
+      Data.kangs.append(Kang(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset))
   
   def addItem(self):
     if (self.collectible == 1):

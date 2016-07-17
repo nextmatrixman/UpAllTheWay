@@ -4,3 +4,4 @@ class Data(object):
   magicBox = []
   akises = []
   kangs = []
+  balls = []
