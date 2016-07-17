@@ -27,7 +27,6 @@ class UpAllTheWay(ShowBase):
     
     # Accept the control keys for movement and rotation
     self.accept('escape', self.doExit)
-    self.accept('r', self.doReset)
     self.accept('f1', self.toggleHelp)
     self.accept('f3', self.toggleDebug)
     self.accept('space', self.player.doJump)
@@ -83,10 +82,6 @@ class UpAllTheWay(ShowBase):
   def doExit(self):
     self.cleanup()
     sys.exit(1)
-
-  def doReset(self):
-    self.cleanup()
-    self.setup()
 
   def toggleHelp(self):
     if (self.helpOn == False):
