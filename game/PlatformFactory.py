@@ -45,7 +45,7 @@ class PlatformFactory(object):
       
       for i in range(Data.collectibleTotal - 1):
         while (self.selected in self.selectedList):
-          self.selected = random.randint(0, Data.platformCount - 1)
+          self.selected = random.randint(0, Data.platformCount - 2)
         self.selectedList.append(self.selected)
       
       for i in range(len(self.selectedList)):
