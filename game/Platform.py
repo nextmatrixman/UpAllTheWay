@@ -14,12 +14,12 @@ from panda3d.bullet import BulletBoxShape
 from panda3d.bullet import BulletRigidBodyNode
 
 class Platform(object):
-  def __init__(self, render, world, loader, collectible, id, side, x, y, z):
+  def __init__(self, render, world, loader, collectible, overlay, side, x, y, z):
     self.render = render
     self.world = world
     self.loader = loader
     self.collectible = collectible
-    self.id = id
+    self.overlay = overlay
     self.side = side
     self.thing = -1
     
@@ -42,7 +42,7 @@ class Platform(object):
   
   def createPlatform(self):
     platformShape = BulletBoxShape(Vec3(self.side, self.side, 0.2))
-    platformNP = self.render.attachNewNode(BulletRigidBodyNode('Platform' + self.id))
+    platformNP = self.render.attachNewNode(BulletRigidBodyNode('Platform'))
     platformNP.node().addShape(platformShape)
     platformNP.setPos(self.x, self.y, self.z)
     platformNP.setCollideMask(BitMask32.allOn())
@@ -55,14 +55,14 @@ class Platform(object):
     
   def addThing(self):
     if (self.thing == 0):
-      Data.akises.append(Akis(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset))
+      Data.akises.append(Akis(self.render, self.world, self.loader, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset))
     elif (self.thing == 1):
-      Data.kangs.append(Kang(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset))
+      Data.kangs.append(Kang(self.render, self.world, self.loader, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset))
   
   def addItem(self):
     if (self.collectible == 1):
-      Data.books.append(Collectible(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset))
+      Data.books.append(Collectible(self.render, self.world, self.loader, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset))
     elif (self.collectible == 2):
-      Data.door.append(Door(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset))
+      Data.door.append(Door(self.render, self.world, self.loader, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset))
     elif (self.collectible == 3):
-      Data.magicBox.append(MagicBox(self.render, self.world, self.loader, self.id, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset))
+      Data.magicBox.append(MagicBox(self.render, self.world, self.loader, self.x + self.xYOffset, self.y + self.xYOffset, self.z + self.zOffset))

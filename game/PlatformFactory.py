@@ -69,4 +69,4 @@ class PlatformFactory(object):
   def createPlatform(self):
     if (len(self.platformList) > 0):
       for i in range(len(self.platformList)):
-        Platform(self.render, self.world, self.loader, self.platformList[i][0], str(i), self.platformList[i][1], self.platformList[i][2], self.platformList[i][3], self.platformList[i][4])
+        Platform(self.render, self.world, self.loader, self.platformList[i][0], 1, self.platformList[i][1], self.platformList[i][2], self.platformList[i][3], self.platformList[i][4])

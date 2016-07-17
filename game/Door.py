@@ -10,7 +10,7 @@ from panda3d.core import Vec3
 class Door(Item):
   def createItem(self):
     self.collisionShape = BulletBoxShape(Vec3(1.2, 0.2, 1.2))
-    self.actor = BulletRigidBodyNode('Door' + self.id)
+    self.actor = BulletRigidBodyNode('Door')
     self.actor.addShape(self.collisionShape)
     self.np = self.render.attachNewNode(self.actor)
     self.np.setCollideMask(BitMask32.allOff())

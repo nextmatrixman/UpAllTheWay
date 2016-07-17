@@ -10,7 +10,7 @@ from panda3d.core import Vec3
 class Collectible(Item):
   def createItem(self):
     self.shape = BulletBoxShape(Vec3(0.5, 0.1, 0.5))
-    self.actor = BulletRigidBodyNode('Collectible' + self.id)
+    self.actor = BulletRigidBodyNode('Collectible')
     self.actor.addShape(self.shape)
     self.np = self.render.attachNewNode(self.actor)
     self.np.setCollideMask(BitMask32.allOff())

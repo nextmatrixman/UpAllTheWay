@@ -10,7 +10,7 @@ from panda3d.core import Vec3
 class MagicBox(Item):
   def createItem(self):
     self.collisionShape = BulletBoxShape(Vec3(0.5, 0.6, 0.5))
-    self.actor = BulletRigidBodyNode('MagicBox' + self.id)
+    self.actor = BulletRigidBodyNode('MagicBox')
     self.actor.addShape(self.collisionShape)
     self.np = self.render.attachNewNode(self.actor)
     self.np.setCollideMask(BitMask32.allOff())

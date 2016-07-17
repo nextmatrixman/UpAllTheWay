@@ -13,7 +13,7 @@ from panda3d.bullet import BulletRigidBodyNode, BulletBoxShape
 class Kang(Enemy):
   def createCharacter(self):
     self.shape = BulletBoxShape(Vec3(0.4, 0.4, 0.85))
-    self.actor = BulletRigidBodyNode('Kang' + self.id)
+    self.actor = BulletRigidBodyNode('Kang')
 #     self.actor.setMass(5.0)
     self.np = self.render.attachNewNode(self.actor)
     self.np.node().addShape(self.shape)
