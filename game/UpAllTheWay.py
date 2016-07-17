@@ -241,11 +241,8 @@ class UpAllTheWay(ShowBase):
     distance = self.getDistance(self.player.getCharacterNP(), secondObject.getNP())
     
     if (distance > self.contactDistance and distance <= self.detectDistance):
-      if ("Akis" in name):
+      if ("Akis" in name or "Kang" in name):
         secondObject.move(self.player)
-      elif ("Kang" in name):
-        # drop things onto player
-        print "something"
     
     if (distance <= self.contactDistance):
       if ("Collectible" in name):

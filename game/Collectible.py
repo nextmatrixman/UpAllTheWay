@@ -23,12 +23,6 @@ class Collectible(Item):
     self.actorModelNP.setH(180)
     self.actorModelNP.setPos(-0.3, 0, -0.5)
   
-  def getActor(self):
-    return self.actor
-
-  def getNP(self):
-    return self.np
-  
   def getActorModelNP(self):
     return self.actorModelNP
 

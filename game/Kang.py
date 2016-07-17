@@ -25,3 +25,7 @@ class Kang(Enemy):
     self.actorModelNP.setScale(0.3048)
     self.actorModelNP.setH(180)
     self.actorModelNP.setPos(0, 0, -0.82)
+  
+  def move(self, player):
+    playerNP = player.getCharacterNP()
+    self.np.lookAt(playerNP.getX(), playerNP.getY(), self.np.getZ())

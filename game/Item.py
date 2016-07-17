@@ -13,3 +13,9 @@ class Item(object):
     self.z = z
     
     self.createItem()
+
+  def getActor(self):
+    return self.actor
+  
+  def getNP(self):
+    return self.np
