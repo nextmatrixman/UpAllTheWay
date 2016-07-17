@@ -7,7 +7,6 @@ from Platform import Platform
 from Data import Data
 from Player import Player
 from PlatformFactory import PlatformFactory
-from Ball import Ball
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import AmbientLight
 from panda3d.core import DirectionalLight
@@ -24,13 +23,20 @@ class UpAllTheWay(ShowBase):
   def __init__(self):
     ShowBase.__init__(self)
 
-    self.platformCount = 15
-    self.collectibleCounter = 0
-    self.collectibleTotal = 5
-    self.frameRate = 60
-    self.maxTime = 7200
+    # GAME PARAMETERS
+    self.currentLevel = 1
+    self.platformCount = 3
+    self.collectibleTotal = 1
+    self.timeAllowed = 120
     self.contactDistance = 1
     self.detectDistance = 4
+    self.ballDropRate = 1
+    
+    # OTHER PARAMETERS
+    self.collectibleCounter = 0
+    self.frameRate = 60
+    self.maxTime = self.timeAllowed * self.frameRate
+    self.dropRate = self.ballDropRate * self.frameRate
     
     self.setupLights()
     self.setup()
@@ -248,7 +254,7 @@ class UpAllTheWay(ShowBase):
     if (distance > self.contactDistance and distance <= self.detectDistance):
       if ("Akis" in name or "Kang" in name):
         secondObject.move(self.player)
-      if ("Kang" in name and self.maxTime%60 == 0):
+      if ("Kang" in name and self.maxTime % self.dropRate == 0):
         secondObject.drop(self.player)
     
     if (distance <= self.contactDistance):
