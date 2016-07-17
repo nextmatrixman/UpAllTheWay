@@ -11,7 +11,7 @@ class Data(object):
   else:
     platformCount = 15
     collectibleTotal = 10
-    timeAllowed = 120
+    timeAllowed = 150
     detectDistance = 5
     ballDropRate = 0.5
   

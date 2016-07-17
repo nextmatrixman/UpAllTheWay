@@ -78,7 +78,7 @@ class UpAllTheWay(ShowBase):
   def addVictoryText(self, msg):
     return OnscreenText(text=msg, style=1, fg=(1, 1, 1, 1), 
                         scale=.25, shadow=(0, 0, 0, 1), parent = base.a2dTopLeft, 
-                        pos=(0.75, -1), align = TextNode.ALeft)
+                        pos=(0.6, -1), align = TextNode.ALeft)
   
   def doExit(self):
     self.cleanup()
@@ -230,6 +230,9 @@ class UpAllTheWay(ShowBase):
     if (len(Data.balls) > 0):
       for ball in Data.balls:
         self.distanceTest(ball)
+        
+    if (len(Data.magicBox) > 0):
+      self.distanceTest(Data.magicBox[0])
 
   def distanceTest(self, secondObject):
     name = secondObject.getActor().getName()
@@ -242,10 +245,13 @@ class UpAllTheWay(ShowBase):
         secondObject.drop(self.player)
     
     if (distance <= Data.winningDistance):
-      if ("Door" in name):
-        if (Data.collectibleCounter == Data.collectibleTotal):
+      if (Data.collectibleCounter == Data.collectibleTotal):
+        if ("Door" in name):
           taskMgr.remove('updateWorld')
           self.addVictoryText("YOU WON!!!")
+        elif ("MagicBox" in name):
+          taskMgr.remove('updateWorld')
+          self.addVictoryText("GRADUATED!")
     
     if (distance <= Data.contactDistance):
       if ("Collectible" in name):
@@ -272,7 +278,7 @@ class UpAllTheWay(ShowBase):
       Data.maxTime -= 1
     elif (Data.maxTime == 0):
       taskMgr.remove('updateWorld')
-      self.addVictoryText("YOU LOST!!")
+      self.addVictoryText("YOU LOST!!!")
       
   # UTIL METHODS
   def getDistance(self, one, two):

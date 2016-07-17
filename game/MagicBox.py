@@ -4,18 +4,18 @@
 
 from Item import Item
 from panda3d.core import BitMask32
-from panda3d.bullet import BulletGhostNode, BulletBoxShape
+from panda3d.bullet import BulletRigidBodyNode, BulletBoxShape
 from panda3d.core import Vec3
 
 class MagicBox(Item):
   def createItem(self):
     self.collisionShape = BulletBoxShape(Vec3(0.5, 0.6, 0.5))
-    self.ghostNode = BulletGhostNode('MagicBox' + self.id)
-    self.ghostNode.addShape(self.collisionShape)
-    self.np = self.render.attachNewNode(self.ghostNode)
+    self.actor = BulletRigidBodyNode('MagicBox' + self.id)
+    self.actor.addShape(self.collisionShape)
+    self.np = self.render.attachNewNode(self.actor)
     self.np.setCollideMask(BitMask32.allOff())
-    self.np.setPos(self.x, self.y, self.z - 3.2)
-    self.world.attachGhost(self.ghostNode)
+    self.np.setPos(self.x, self.y, self.z)
+    self.world.attachRigidBody(self.actor)
     
     self.actorModelNP = self.loader.loadModel('models/magicbox/ToyBox.egg')
     self.actorModelNP.reparentTo(self.np)
