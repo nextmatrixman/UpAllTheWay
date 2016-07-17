@@ -22,22 +22,6 @@ from direct.gui.OnscreenText import OnscreenText
 class UpAllTheWay(ShowBase):
   def __init__(self):
     ShowBase.__init__(self)
-
-    # GAME PARAMETERS
-    self.currentLevel = 1
-    self.platformCount = 3
-    self.collectibleTotal = 1
-    self.timeAllowed = 120
-    self.contactDistance = 1
-    self.detectDistance = 4
-    self.ballDropRate = 1
-    
-    # OTHER PARAMETERS
-    self.collectibleCounter = 0
-    self.frameRate = 60
-    self.maxTime = self.timeAllowed * self.frameRate
-    self.dropRate = self.ballDropRate * self.frameRate
-    
     self.setupLights()
     self.setup()
     
@@ -75,8 +59,8 @@ class UpAllTheWay(ShowBase):
     self.env.reparentTo(render)
     
     # Add text
-    self.collectibleIndicator = "Level 1: collectible items - " + str(self.collectibleCounter) + "/" + str(self.collectibleTotal)
-    self.timeIndicator = "Time left - " + str(self.maxTime/self.frameRate)
+    self.collectibleIndicator = "Level 1: collectible items - " + str(Data.collectibleCounter) + "/" + str(Data.collectibleTotal)
+    self.timeIndicator = "Time left - " + str(Data.maxTime/Data.frameRate)
     self.helpIndicator = "[F1] - Help, [1] - level 1, [2] - level 2"
     self.inst1 = self.addInstructions(0.06, self.collectibleIndicator)
     self.inst2 = self.addInstructions(0.12, self.timeIndicator)
@@ -213,7 +197,7 @@ class UpAllTheWay(ShowBase):
     Platform(self.render, self.world, self.loader, 0, str(-1), 2, 0, 0, -3)
 
     # Generate platforms
-    PlatformFactory(self.render, self.world, self.loader, self.platformCount, self.collectibleTotal)
+    PlatformFactory(self.render, self.world, self.loader)
     
     # Create player character
     self.player = Player(self.render, self.world, 0, 0, 0)
@@ -251,20 +235,20 @@ class UpAllTheWay(ShowBase):
     name = secondObject.getActor().getName()
     distance = self.getDistance(self.player.getCharacterNP(), secondObject.getNP())
     
-    if (distance > self.contactDistance and distance <= self.detectDistance):
+    if (distance > Data.contactDistance and distance <= Data.detectDistance):
       if ("Akis" in name or "Kang" in name):
         secondObject.move(self.player)
-      if ("Kang" in name and self.maxTime % self.dropRate == 0):
+      if ("Kang" in name and Data.maxTime % Data.dropRate == 0):
         secondObject.drop(self.player)
     
-    if (distance <= self.contactDistance):
+    if (distance <= Data.contactDistance):
       if ("Collectible" in name):
         secondObject.killNP()
         secondObject.getActorModelNP().removeNode()
         self.collectSound.play()
-        self.collectibleCounter += 1
+        Data.collectibleCounter += 1
       elif ("Door" in name):
-        if (self.collectibleCounter == self.collectibleTotal):
+        if (Data.collectibleCounter == Data.collectibleTotal):
           taskMgr.remove('updateWorld')
           self.addVictoryText("YOU WON!!!")
       elif ("Akis" in name or "Kang" in name or "Ball" in name):
@@ -272,19 +256,19 @@ class UpAllTheWay(ShowBase):
         self.laughSound.play()
           
   def refreshCollectibleCount(self):
-    self.collectibleIndicator = "Level 1: collectible items - " + str(self.collectibleCounter) + "/" + str(self.collectibleTotal)
+    self.collectibleIndicator = "Level 1: collectible items - " + str(Data.collectibleCounter) + "/" + str(Data.collectibleTotal)
     self.inst1.destroy()
     self.inst1 = self.addInstructions(0.06, self.collectibleIndicator)
     
     # refresh time
-    self.timeIndicator = "Time left - " + str(self.maxTime/self.frameRate)
+    self.timeIndicator = "Time left - " + str(Data.maxTime/Data.frameRate)
     self.inst2.destroy()
     self.inst2 = self.addInstructions(0.12, self.timeIndicator)
   
   def countdown(self):
-    if (self.maxTime > 0):
-      self.maxTime -= 1
-    elif (self.maxTime == 0):
+    if (Data.maxTime > 0):
+      Data.maxTime -= 1
+    elif (Data.maxTime == 0):
       taskMgr.remove('updateWorld')
       self.addVictoryText("YOU LOST!!")
       
