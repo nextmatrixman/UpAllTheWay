@@ -189,7 +189,7 @@ class UpAllTheWay(ShowBase):
     self.world.setDebugNode(self.debugNP.node())
 
     # Create starting platform
-    Platform(self.render, self.world, self.loader, 0, str(-1), 2, 0, 0, -3)
+    Platform(self.render, self.world, self.loader, 0, 1, 2, 0, 0, -3)
 
     # Generate platforms
     PlatformFactory(self.render, self.world, self.loader)

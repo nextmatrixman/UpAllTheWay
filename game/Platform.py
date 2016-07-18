@@ -48,7 +48,10 @@ class Platform(object):
     platformNP.setCollideMask(BitMask32.allOn())
     self.world.attachRigidBody(platformNP.node())
     
-    platformModel = self.loader.loadModel("models/stone-cube/stone")
+    if (self.overlay == 1):
+      platformModel = self.loader.loadModel("models/stone-cube/stone")
+    else:
+      platformModel = self.loader.loadModel("models/brick-cube/brick")
     platformModel.setScale(self.side*2, self.side*2, 0.2*2)
     platformModel.setPos(self.x, self.y, self.z-0.2)
     platformModel.reparentTo(self.render)
