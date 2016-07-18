@@ -2,6 +2,7 @@
 # Author: Di Shen
 # CS594 Summer 2016
 
+from Data import Data
 from direct.actor.Actor import Actor
 from panda3d.core import Vec3
 from panda3d.core import BitMask32
@@ -16,9 +17,6 @@ class Player(object):
     self.x = x
     self.y = y
     self.z = z
-    self.initialX = x
-    self.initialY = y
-    self.initialZ = z
     
     # Game state variables
     self.isMoving = False
@@ -101,5 +99,7 @@ class Player(object):
     return self.actorNP
   
   def resetCharacter(self):
-    self.characterNP.setPos(self.initialX, self.initialY, self.initialZ)
-    self.actorNP.setPos(self.initialX, self.initialY, self.initialZ + 0.27)
+    if (Data.currentLevel == 1):
+      self.characterNP.setPos(0, 0, 0)
+    else:
+      self.characterNP.setPos(100, 100, 0)

@@ -27,4 +27,4 @@ class Collectible(Item):
     return self.actorModelNP
 
   def killNP(self):
-    self.np.setPos(100, 100, 100)
+    self.np.setPos(-100, -100, -100)

@@ -27,8 +27,10 @@ class UpAllTheWay(ShowBase):
     
     # Accept the control keys for movement and rotation
     self.accept('escape', self.doExit)
-    self.accept('f1', self.toggleHelp)
-    self.accept('f3', self.toggleDebug)
+    self.accept('f1', self.level1Selector)
+    self.accept('f2', self.level2Selector)
+    self.accept('f3', self.toggleHelp)
+    self.accept('f4', self.toggleDebug)
     self.accept('space', self.player.doJump)
     self.accept("a", self.player.setKey, ["left", True])
     self.accept("a-up", self.player.setKey, ["left", False])
@@ -58,9 +60,11 @@ class UpAllTheWay(ShowBase):
     self.env.reparentTo(render)
     
     # Add text
-    self.collectibleIndicator = "Level 1: collectible items - " + str(Data.collectibleCounter) + "/" + str(Data.collectibleTotal)
+    self.collectibleCounter = 0
+    self.collectibleTotal = Data.collectibleTotal1
+    self.collectibleIndicator = "Level " + str(Data.currentLevel) + ": collectible items - " + str(self.collectibleCounter) + "/" + str(self.collectibleTotal)
     self.timeIndicator = "Time left - " + str(Data.maxTime/Data.frameRate)
-    self.helpIndicator = "[F1] - Help, [1] - level 1, [2] - level 2"
+    self.helpIndicator = "[F1] - level 1, [F2] - level 2, [F1] - Help"
     self.inst1 = self.addInstructions(0.06, self.collectibleIndicator)
     self.inst2 = self.addInstructions(0.12, self.timeIndicator)
     self.inst3 = self.addInstructions(0.18, self.helpIndicator)
@@ -122,6 +126,28 @@ class UpAllTheWay(ShowBase):
       self.debugNP.show()
     else:
       self.debugNP.hide()
+      
+  def level1Selector(self):
+    if (Data.currentLevel == 2 and self.collectibleCounter == 0):
+      Data.currentLevel = 1
+      Data.maxTime = 7200
+      Data.detectDistance = 4
+      Data.dropRate = 60
+      self.collectibleTotal = Data.collectibleTotal1
+      self.player.resetCharacter()
+      self.level2Music.stop()
+      self.level1Music.play()
+  
+  def level2Selector(self):
+    if (Data.currentLevel == 1 and self.collectibleCounter == 0):
+      Data.currentLevel = 2
+      Data.maxTime = 9000
+      Data.detectDistance = 5
+      Data.dropRate = 30
+      self.collectibleTotal = Data.collectibleTotal2
+      self.player.resetCharacter()
+      self.level1Music.stop()
+      self.level2Music.play()
               
   def update(self, task):
     dt = globalClock.getDt()
@@ -188,8 +214,9 @@ class UpAllTheWay(ShowBase):
     self.world.setGravity(Vec3(0, 0, -9.81))
     self.world.setDebugNode(self.debugNP.node())
 
-    # Create starting platform
+    # Create starting platforms
     Platform(self.render, self.world, self.loader, 0, 1, 2, 0, 0, -3)
+    Platform(self.render, self.world, self.loader, 0, 2, 2, 100, 100, -3)
 
     # Generate platforms
     PlatformFactory(self.render, self.world, self.loader)
@@ -198,10 +225,13 @@ class UpAllTheWay(ShowBase):
     self.player = Player(self.render, self.world, 0, 0, 0)
     
     # Music and sound
-    self.gameMusic = base.loader.loadSfx("sounds/level1.mp3")
-    self.gameMusic.setLoop()
-    self.gameMusic.setVolume(0.4)
-    self.gameMusic.play()
+    self.level1Music = base.loader.loadSfx("sounds/level1.mp3")
+    self.level1Music.setLoop()
+    self.level1Music.setVolume(0.4)
+    self.level1Music.play()
+    self.level2Music = base.loader.loadSfx("sounds/level2.mp3")
+    self.level2Music.setLoop()
+    self.level2Music.setVolume(0.4)
     self.laughSound = base.loader.loadSfx("sounds/laugh.ogg")
     self.collectSound = base.loader.loadSfx("sounds/collect.mp3")
   
@@ -240,7 +270,7 @@ class UpAllTheWay(ShowBase):
         secondObject.drop(self.player)
     
     if (distance <= Data.winningDistance):
-      if (Data.collectibleCounter == Data.collectibleTotal):
+      if (self.collectibleCounter == self.collectibleTotal):
         if ("Door" in name):
           taskMgr.remove('updateWorld')
           self.addVictoryText("YOU WON!!!")
@@ -253,13 +283,13 @@ class UpAllTheWay(ShowBase):
         secondObject.killNP()
         secondObject.getActorModelNP().removeNode()
         self.collectSound.play()
-        Data.collectibleCounter += 1
+        self.collectibleCounter += 1
       elif ("Akis" in name or "Kang" in name or "Ball" in name):
         self.player.resetCharacter()
         self.laughSound.play()
           
   def refreshCollectibleCount(self):
-    self.collectibleIndicator = "Level 1: collectible items - " + str(Data.collectibleCounter) + "/" + str(Data.collectibleTotal)
+    self.collectibleIndicator = "Level " + str(Data.currentLevel) + ": collectible items - " + str(self.collectibleCounter) + "/" + str(self.collectibleTotal)
     self.inst1.destroy()
     self.inst1 = self.addInstructions(0.06, self.collectibleIndicator)
     
