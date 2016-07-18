@@ -6,9 +6,9 @@ class Data(object):
   dropRate = 60
   
   # OTHER PARAMETERS
-  platformCount1 = 10
+  platformCount1 = 15
   collectibleTotal1 = 5
-  platformCount2 = 15
+  platformCount2 = 20
   collectibleTotal2 = 10
   contactDistance = 1
   winningDistance = 1.5

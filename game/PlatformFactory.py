@@ -15,18 +15,18 @@ class PlatformFactory(object):
     self.zOffset = 3
     
     # setup level 1
-    self.generatePlatform(Data.platformCount1, 1, 0, 0, -3)
+    self.generatePlatform(Data.platformCount1, 1, 2, 0, 0, -3)
     self.insertCollectable(Data.platformCount1, Data.collectibleTotal1)
     self.addLastPlatform(2, 1)
     self.createPlatform()
     # setup level 2
-    self.generatePlatform(Data.platformCount2, 2, 100, 100, -3)
+    self.generatePlatform(Data.platformCount2, 2, 3, 100, 100, -3)
     self.insertCollectable(Data.platformCount2, Data.collectibleTotal2)
     self.addLastPlatform(3, 2)
     self.createPlatform()
     
   # Create the data that's needed to generate the platforms
-  def generatePlatform(self, platformCount, overlay, x, y, z):
+  def generatePlatform(self, platformCount, overlay, distanceOffset, x, y, z):
     self.platformList = []
     self.currentX = x
     self.currentY = y
@@ -34,7 +34,7 @@ class PlatformFactory(object):
     
     for i in range(platformCount - 1):
       self.currentSide = random.randint(1, 4)
-      self.tempOffset = self.lastSide + self.currentSide + 2
+      self.tempOffset = self.lastSide + self.currentSide + distanceOffset
       self.currentX = self.currentX + random.choice([self.tempOffset, 0, -self.tempOffset])
       self.currentY = self.currentY + self.tempOffset
       self.currentZ = self.currentZ + self.zOffset
