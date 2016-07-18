@@ -4,15 +4,14 @@ class Data(object):
   maxTime = 7200
   detectDistance = 4
   dropRate = 60
-  
-  # OTHER PARAMETERS
   platformCount1 = 15
-  collectibleTotal1 = 5
+  collectibleTotal1 = 7
   platformCount2 = 20
   collectibleTotal2 = 10
+  
+  # OTHER PARAMETERS
   contactDistance = 1
   winningDistance = 1.5
-  collectibleCounter = 0
   frameRate = 60
   
   books = []

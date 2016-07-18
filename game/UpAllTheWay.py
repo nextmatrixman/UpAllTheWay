@@ -162,9 +162,9 @@ class UpAllTheWay(ShowBase):
     camdist = camvec.length()
     camvec.normalize()
     # If the camera is too far from Di, move it closer.
-    if (camdist > 20.0):
-      base.camera.setPos(base.camera.getPos() + camvec*(camdist-10))
-      camdist = 20.0
+    if (camdist > 25.0):
+      base.camera.setPos(base.camera.getPos() + camvec*(camdist-20))
+      camdist = 25.0
     # If the camera is too close to Di, move it farther.
     if (camdist < 5.0):
       base.camera.setPos(base.camera.getPos() - camvec*(5-camdist))
@@ -272,8 +272,10 @@ class UpAllTheWay(ShowBase):
     if (distance <= Data.winningDistance):
       if (self.collectibleCounter == self.collectibleTotal):
         if ("Door" in name):
-          taskMgr.remove('updateWorld')
-          self.addVictoryText("YOU WON!!!")
+#           taskMgr.remove('updateWorld')
+#           self.addVictoryText("YOU WON!!!")
+          self.collectibleCounter = 0
+          self.level2Selector()
         elif ("MagicBox" in name):
           taskMgr.remove('updateWorld')
           self.addVictoryText("GRADUATED!")
