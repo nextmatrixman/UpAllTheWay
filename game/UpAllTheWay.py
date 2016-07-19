@@ -18,6 +18,7 @@ from panda3d.core import TextNode
 from panda3d.bullet import BulletWorld
 from panda3d.bullet import BulletDebugNode
 from direct.gui.OnscreenText import OnscreenText
+from direct.gui.DirectGui import *
 
 class UpAllTheWay(ShowBase):
   def __init__(self):
@@ -27,10 +28,8 @@ class UpAllTheWay(ShowBase):
     
     # Accept the control keys for movement and rotation
     self.accept('escape', self.doExit)
-    self.accept('f1', self.level1Selector)
-    self.accept('f2', self.level2Selector)
-    self.accept('f3', self.toggleHelp)
-    self.accept('f4', self.toggleDebug)
+    self.accept('f1', self.toggleHelp)
+    self.accept('f3', self.toggleDebug)
     self.accept('space', self.player.doJump)
     self.accept("a", self.player.setKey, ["left", True])
     self.accept("a-up", self.player.setKey, ["left", False])
@@ -64,7 +63,7 @@ class UpAllTheWay(ShowBase):
     self.collectibleTotal = Data.collectibleTotal1
     self.collectibleIndicator = "Level " + str(Data.currentLevel) + ": collectible items - " + str(self.collectibleCounter) + "/" + str(self.collectibleTotal)
     self.timeIndicator = "Time left - " + str(Data.maxTime/Data.frameRate)
-    self.helpIndicator = "[F1] - level 1, [F2] - level 2, [F1] - Help"
+    self.helpIndicator = "[F1] - Help"
     self.inst1 = self.addInstructions(0.06, self.collectibleIndicator)
     self.inst2 = self.addInstructions(0.12, self.timeIndicator)
     self.inst3 = self.addInstructions(0.18, self.helpIndicator)
@@ -128,26 +127,49 @@ class UpAllTheWay(ShowBase):
       self.debugNP.hide()
       
   def level1Selector(self):
-    if (Data.currentLevel == 2 and self.collectibleCounter == 0):
-      Data.currentLevel = 1
-      Data.maxTime = 7200
-      Data.detectDistance = 4
-      Data.dropRate = 60
-      self.collectibleTotal = Data.collectibleTotal1
-      self.player.resetCharacter()
-      self.level2Music.stop()
-      self.level1Music.play()
+    Data.maxTime = 7200
+    Data.detectDistance = 4
+    Data.dropRate = 60
+    self.collectibleTotal = Data.collectibleTotal1
+    self.player.resetCharacter()
+    self.level2Music.stop()
+    self.level1Music.play()
   
   def level2Selector(self):
-    if (Data.currentLevel == 1 and self.collectibleCounter == 0):
-      Data.currentLevel = 2
-      Data.maxTime = 9000
-      Data.detectDistance = 5
-      Data.dropRate = 30
-      self.collectibleTotal = Data.collectibleTotal2
-      self.player.resetCharacter()
-      self.level1Music.stop()
-      self.level2Music.play()
+    Data.maxTime = 9000
+    Data.detectDistance = 5
+    Data.dropRate = 30
+    self.collectibleTotal = Data.collectibleTotal2
+    self.player.resetCharacter()
+    self.level1Music.stop()
+    self.level2Music.play()
+      
+  def createMainMenu(self):
+    self.v = [0]
+    self.myFrame = DirectFrame(frameColor = (0.8, 0.8, 0.8, 1), frameSize = (-0.5, 0.5, -0.3, 0.3), pos = (0, 0, 0))
+    self.myLabel = DirectLabel(text = 'MAIN  MENU', scale = 0.1, pos = (0, 0, 0.16))
+    self.buttons = [
+      DirectRadioButton(text = 'Level 1', variable = self.v, value = [1], scale = 0.1, pos = (-0.2,0,-0.05), command = self.setLevel),
+      DirectRadioButton(text = 'Level 2', variable = self.v, value = [2], scale = 0.1, pos = (0.25,0,-0.05), command = self.setLevel)
+    ]
+    self.start = DirectButton(text = "START", scale = 0.1, pos = (-0.2,0,-0.2), command = self.levelStart)
+    self.quit = DirectButton(text = "QUIT", scale = 0.1, pos = (0.2,0,-0.2), command = self.doExit)
+    
+  def setLevel(self):
+    Data.currentLevel = self.v[0]
+  
+  def levelStart(self):
+    self.myFrame.destroy()
+    self.myLabel.destroy()
+    self.buttons[0].destroy()
+    self.buttons[1].destroy()
+    self.start.destroy()
+    self.quit.destroy()
+    
+    if (Data.currentLevel == 1):
+      self.level1Selector()
+    else:
+      self.level2Selector()
               
   def update(self, task):
     dt = globalClock.getDt()
@@ -234,6 +256,8 @@ class UpAllTheWay(ShowBase):
     self.level2Music.setVolume(0.4)
     self.laughSound = base.loader.loadSfx("sounds/laugh.ogg")
     self.collectSound = base.loader.loadSfx("sounds/collect.mp3")
+    
+    self.createMainMenu()
   
   # Handle contacts
   def processMovements(self):
@@ -272,9 +296,8 @@ class UpAllTheWay(ShowBase):
     if (distance <= Data.winningDistance):
       if (self.collectibleCounter == self.collectibleTotal):
         if ("Door" in name):
-#           taskMgr.remove('updateWorld')
-#           self.addVictoryText("YOU WON!!!")
           self.collectibleCounter = 0
+          Data.currentLevel = 2
           self.level2Selector()
         elif ("MagicBox" in name):
           taskMgr.remove('updateWorld')

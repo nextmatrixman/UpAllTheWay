@@ -20,7 +20,7 @@ class PlatformFactory(object):
     self.addLastPlatform(2, 1)
     self.createPlatform()
     # setup level 2
-    self.generatePlatform(Data.platformCount2, 2, 2.5, 100, 100, -3)
+    self.generatePlatform(Data.platformCount2, 2, 2, 100, 100, -3)
     self.insertCollectable(Data.platformCount2, Data.collectibleTotal2)
     self.addLastPlatform(3, 2)
     self.createPlatform()
