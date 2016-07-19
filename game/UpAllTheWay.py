@@ -73,8 +73,8 @@ class UpAllTheWay(ShowBase):
   
   # Function to put instructions on the screen.
   def addInstructions(self, pos, msg):
-    return OnscreenText(text=msg, style=1, fg=(1, 1, 1, 1), 
-                        scale=.05, shadow=(0, 0, 0, 1), parent = base.a2dTopLeft, 
+    return OnscreenText(text=msg, style=1, fg=(89/255, 255/255, 56/255, 1), 
+                        scale=.06, shadow=(0, 0, 0, 1), parent = base.a2dTopLeft, 
                         pos=(0.04, -pos - 0.02), align = TextNode.ALeft)
   
   def addVictoryText(self, msg):
