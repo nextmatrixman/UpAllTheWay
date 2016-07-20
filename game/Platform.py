@@ -12,6 +12,7 @@ from panda3d.core import BitMask32
 from panda3d.core import Vec3
 from panda3d.bullet import BulletBoxShape
 from panda3d.bullet import BulletRigidBodyNode
+from pandac.PandaModules import *
 
 class Platform(object):
   def __init__(self, render, world, loader, collectible, overlay, side, x, y, z):
@@ -22,6 +23,12 @@ class Platform(object):
     self.overlay = overlay
     self.side = side
     self.thing = -1
+    
+    # SETUP DIRECTIONAL LIGHT
+    self.directionalLight = DirectionalLight( "directionalLight" )
+    self.directionalLight.setColor(Vec4( 1, 1, 1, 1 ))
+    self.directionalLight.setDirection(Vec3(0, 0, -1))
+    self.directionalLightNP = self.render.attachNewNode(self.directionalLight)
     
     if (self.side == 3):
       self.thing = 0
@@ -49,9 +56,34 @@ class Platform(object):
     self.world.attachRigidBody(platformNP.node())
     
     if (self.overlay == 1):
-      platformModel = self.loader.loadModel("models/stone-cube/stone")
+      platformModel = self.loader.loadModel('models/tile-cube/tile')
+      platformModel.setLight(self.directionalLightNP)
+       
+      # regular texture
+      self.tex = self.loader.loadTexture('models/tile-cube/tile.png')
+      platformModel.setTexture(self.tex, 1)
+  
+      # normal-map texture
+      self.normal = self.loader.loadTexture('models/tile-cube/tile-normal.png')
+      self.ts = TextureStage('ts')
+      self.ts.setMode(TextureStage.MNormal)
+      platformModel.setTexture(self.ts, self.normal)
+      platformModel.setShaderAuto()
     else:
-      platformModel = self.loader.loadModel("models/brick-cube/brick")
+      platformModel = self.loader.loadModel("models/mosaic-cube/mosaic")
+      platformModel.setLight(self.directionalLightNP)
+       
+      # regular texture
+      self.tex = self.loader.loadTexture('models/mosaic-cube/mosaic.png')
+      platformModel.setTexture(self.tex, 1)
+  
+      # normal-map texture
+      self.normal = self.loader.loadTexture('models/mosaic-cube/mosaic-normal.png')
+      self.ts = TextureStage('ts')
+      self.ts.setMode(TextureStage.MNormal)
+      platformModel.setTexture(self.ts, self.normal)
+      platformModel.setShaderAuto()
+    
     platformModel.setScale(self.side*2, self.side*2, 0.2*2)
     platformModel.setPos(self.x, self.y, self.z-0.2)
     platformModel.reparentTo(self.render)
