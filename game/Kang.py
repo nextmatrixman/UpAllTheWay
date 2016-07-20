@@ -34,3 +34,4 @@ class Kang(Enemy):
     
   def drop(self, player):
     Data.balls.append(Ball(self.render, self.world, self.loader, player))
+    self.falling.play()

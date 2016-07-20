@@ -254,6 +254,9 @@ class UpAllTheWay(ShowBase):
     self.level2Music = base.loader.loadSfx("sounds/level2.mp3")
     self.level2Music.setLoop()
     self.level2Music.setVolume(0.4)
+    self.winMusic = base.loader.loadSfx("sounds/win.ogg")
+    self.winMusic.setLoop()
+    self.winMusic.setVolume(0.4)
     self.laughSound = base.loader.loadSfx("sounds/laugh.ogg")
     self.collectSound = base.loader.loadSfx("sounds/collect.mp3")
     
@@ -302,6 +305,8 @@ class UpAllTheWay(ShowBase):
         elif ("MagicBox" in name):
           taskMgr.remove('updateWorld')
           self.addVictoryText("GRADUATED!")
+          self.level2Music.stop()
+          self.winMusic.play()
     
     if (distance <= Data.contactDistance):
       if ("Collectible" in name):

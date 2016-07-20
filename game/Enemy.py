@@ -11,6 +11,8 @@ class Enemy(object):
     self.y = y
     self.z = z
     
+    self.falling = base.loader.loadSfx("sounds/falling.mp3")
+    
     self.createCharacter()
   
   def getActor(self):
