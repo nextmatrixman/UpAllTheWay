@@ -152,6 +152,8 @@ class UpAllTheWay(ShowBase):
       DirectRadioButton(text = 'Level 1', variable = self.v, value = [1], scale = 0.1, pos = (-0.2,0,-0.05), command = self.setLevel),
       DirectRadioButton(text = 'Level 2', variable = self.v, value = [2], scale = 0.1, pos = (0.25,0,-0.05), command = self.setLevel)
     ]
+    for button in self.buttons:
+      button.setOthers(self.buttons)
     self.start = DirectButton(text = "START", scale = 0.1, pos = (-0.2,0,-0.2), command = self.levelStart)
     self.quit = DirectButton(text = "QUIT", scale = 0.1, pos = (0.2,0,-0.2), command = self.doExit)
     
